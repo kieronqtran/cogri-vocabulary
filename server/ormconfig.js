@@ -1,10 +1,10 @@
-{
+module.exports = {
    "type": "mysql",
    "host": "localhost",
    "port": 3306,
-   "username": "test",
-   "password": "test",
-   "database": "test",
+   "username": "root",
+   "password": "123456",
+   "database": "corgi_vocabulary",
    "synchronize": true,
    "logging": false,
    "entities": [

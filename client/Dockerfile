@@ -1,4 +1,4 @@
-FROM node:11.1.0 as npm_builder
+FROM node:dubnium-alpine as npm_builder
 # Set the entrypoint as bin bash incase we want to inspect the container
 ENTRYPOINT ["/bin/bash"]
 # Manually copy the package.json
@@ -19,7 +19,7 @@ WORKDIR /usr/src/app
 # Build our distributable
 RUN npm run build:prod
 
-FROM node:11.1.0 as production
+FROM node:dubnium-alpine as production
 # Copy the dist folder from builder
 COPY --from=builder /usr/src/app/dist /usr/src/app/dist
 COPY --from=builder /usr/src/app/server.js /usr/src/app/server.js

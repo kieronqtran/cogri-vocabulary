@@ -2,9 +2,15 @@
   "AWSEBDockerrunVersion": 2,
   "volumes": [
     {
-      "name": "php-app",
+      "name": "frontend-app",
       "host": {
-        "sourcePath": "/var/app/current/php-app"
+        "sourcePath": "/var/app/current/frontend-app"
+      }
+    },
+    {
+      "name": "api-app",
+      "host": {
+        "sourcePath": "/var/app/current/api-app"
       }
     },
     {
@@ -16,21 +22,16 @@
   ],
   "containerDefinitions": [
     {
-      "name": "php-app",
-      "image": "php:fpm",
+      "name": "api-app",
+      "image": "kieronqtran/cogri-vocabulary-api",
       "essential": true,
-      "memory": 128,
-      "mountPoints": [
-        {
-          "sourceVolume": "php-app",
-          "containerPath": "/var/www/html",
-          "readOnly": true
-        },
-        {
-          "sourceVolume": "awseb-logs-php-app",
-          "containerPath": "/var/log/sample-app"
-        }
-      ]
+      "memory": 128
+    },
+    {
+      "name": "frontend-app",
+      "image": "kieronqtran/cogri-vocabulary-fe",
+      "essential": true,
+      "memory": 256
     },
     {
       "name": "nginx-proxy",
@@ -44,14 +45,10 @@
         }
       ],
       "links": [
-        "php-app"
+				"frontend-app",
+        "api-app"
       ],
       "mountPoints": [
-        {
-          "sourceVolume": "php-app",
-          "containerPath": "/var/www/html",
-          "readOnly": true
-        },
         {
           "sourceVolume": "awseb-logs-nginx-proxy",
           "containerPath": "/var/log/nginx"

@@ -4,12 +4,12 @@
    "description": "description",
    "scripts": {
       "build": "tsc",
+      "build:prod": "tsc",
       "format": "prettier --write \"src/**/*.ts\"",
-      "start": "ts-node src/index.ts",
+      "start": "ts-node -r dotenv/config src/main.ts",
       "start:dev": "nodemon",
       "start:debug": "nodemon --config nodemon-debug.json",
-      "prestart:prod": "rimraf dist && tsc",
-      "start:prod": "node dist/main.js",
+      "start:prod": "pm2-runtime start ecosystem.config.js --env production",
       "lint": "tslint -p tsconfig.json -c tslint.json",
       "test": "jest",
       "test:watch": "jest --watch",
@@ -20,13 +20,12 @@
       "@nestjs/common": "^5.4.0",
       "@nestjs/core": "^5.4.0",
       "aws-sdk": "^2.359.0",
-      "dotenv": "^6.1.0",
-      "mysql": "^2.14.1",
+      "mysql": "^2.16.0",
+      "pm2": "^3.2.2",
       "reflect-metadata": "^0.1.10",
       "rimraf": "^2.6.2",
       "rxjs": "^6.2.2",
-      "typeorm": "0.2.9",
-      "typescript": "^3.0.1"
+      "typeorm": "0.2.9"
    },
    "devDependencies": {
       "@nestjs/testing": "^5.1.0",
@@ -34,6 +33,7 @@
       "@types/jest": "^23.3.1",
       "@types/node": "^8.0.29",
       "@types/supertest": "^2.0.5",
+      "dotenv": "^6.1.0",
       "jest": "^23.5.0",
       "nodemon": "^1.18.3",
       "prettier": "^1.14.2",
@@ -43,7 +43,7 @@
       "ts-node": "3.3.0",
       "tsconfig-paths": "^3.5.0",
       "tslint": "5.11.0",
-      "typescript": "2.5.2"
+      "typescript": "^3.0.1"
    },
    "jest": {
       "moduleFileExtensions": [
