@@ -1,10 +1,10 @@
 module.exports = {
    "type": "mysql",
-   "host": "localhost",
-   "port": 3306,
-   "username": "root",
-   "password": "123456",
-   "database": "corgi_vocabulary",
+   "host": process.env.DB_HOST,
+   "port": process.env.DB_PORT || 3306,
+   "username": process.env.DB_USERNAME,
+   "password": process.env.DB_PASSWORD,
+   "database": process.env.DB_DATABASE_NAME,
    "synchronize": true,
    "logging": false,
    "entities": [
