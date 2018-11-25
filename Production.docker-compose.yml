@@ -1,14 +1,26 @@
 version: '3.7'
 services:
   web:
-    image: persistentcontainerregistry.azurecr.io/brothinjord.client
-    container_name: b_client
+    image: kieronqtran/cogri-vocabulary-fe
+    container_name: cogri-vocabulary-fe
     build:
-      context: .
+      context: client
       dockerfile: Production.Dockerfile
       target: production
+    env_file:
+      - ./client/docker.env
     environment:
       - CONTEXT=angular-ngrx-material-starter
-      - PORT=150
+      - PORT=4200
     ports:
-      - '100:150'
+      - '4200:4200'
+  api:
+    image: kieronqtran/cogri-vocabulary-api
+    build:
+      context: server
+      dockerfile: dockerfile
+      target: production
+    env_file:
+      - ./server/docker.env
+    environment:
+     - NODE_ENV=production

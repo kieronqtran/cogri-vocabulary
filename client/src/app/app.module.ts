@@ -7,6 +7,7 @@ import { CoreModule } from '@app/core';
 
 import { SettingsModule } from './settings';
 import { StaticModule } from './static';
+import { AuthModule } from './auth';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,10 +24,11 @@ import { AppComponent } from './app.component';
 
     // features
     StaticModule,
-    SettingsModule,
+		SettingsModule,
+		AuthModule,
 
     // app
-    AppRoutingModule,
+		AppRoutingModule,
   ],
   declarations: [AppComponent],
   providers: [],

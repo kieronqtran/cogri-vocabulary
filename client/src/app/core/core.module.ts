@@ -37,7 +37,7 @@ import { NotificationService } from './notifications/notification.service';
     environment.production
       ? []
       : StoreDevtoolsModule.instrument({
-          name: 'Angular NgRx Material Starter',
+          name: 'Cogri Vocabulary',
         }),
 
     // 3rd party
@@ -47,7 +47,7 @@ import { NotificationService } from './notifications/notification.service';
         useFactory: HttpLoaderFactory,
         deps: [HttpClient],
       },
-    }),
+		}),
   ],
   declarations: [],
   providers: [

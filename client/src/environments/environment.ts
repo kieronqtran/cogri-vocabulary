@@ -14,11 +14,11 @@ export const environment = {
 	i18nPrefix: '',
 	amplify: {
     Auth: {
-        identityPoolId: 'us-east-1_wc2MajHjU',
+        identityPoolId: 'us-east-1:06445a57-7db2-4e37-936b-ac2e1bc9044a',
         region: 'us-east-1',
         identityPoolRegion: 'us-east-1',
-        userPoolId: 'us-east-1_wc2MajHjU',
-        userPoolWebClientId: 'ulh7ak5vo6kt6natjf6j7r39h',
+        userPoolId: 'us-east-1_NRZHxhBEi',
+        userPoolWebClientId: '4a9rqtsq4g3o6vhevbvcho46nv',
         cookieStorage: {
             domain: 'localhost',
             path: '/',

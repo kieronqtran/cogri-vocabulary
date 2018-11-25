@@ -27,10 +27,9 @@
 
           <span routerLink="" class="branding spacer center d-inline d-sm-none">
             <img [src]="logo" /></span>
-          <span routerLink="" class="branding spacer center d-none d-sm-inline d-md-none"><img [src]="logo" /> {{
-            'anms.title.short' | translate }}</span>
-          <span routerLink="" class="branding spacer d-none d-md-inline"><img [src]="logo" /> {{ 'anms.title.long' | translate
-            }}</span>
+          <span routerLink="" class="branding spacer center d-none d-sm-inline d-md-none">
+						<img [src]="logo" /> {{ 'anms.title.short' | translate }}</span>
+          <span routerLink="" class="branding spacer d-none d-md-inline"><img [src]="logo" /> {{ 'anms.title.long' | translate }}</span>
 
           <span class="d-none d-md-inline">
             <button mat-button class="nav-button" *ngFor="let item of navigation" [routerLink]="[item.link]"
@@ -39,7 +38,12 @@
             </button>
           </span>
 
-          <button mat-button mat-stroked-button color="accent" *ngIf="!(isAuthenticated$ | async)" (click)="onLoginClick()">
+					<button
+						mat-button
+						mat-stroked-button
+						*ngIf="!(isAuthenticated$ | async)"
+						[routerLink]="['/login']"
+						routerLinkActive="active">
             {{ 'anms.menu.login' | translate }}
           </button>
 
