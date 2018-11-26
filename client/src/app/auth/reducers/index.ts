@@ -2,6 +2,7 @@ import {
   createSelector,
   createFeatureSelector,
   ActionReducerMap,
+	MetaReducer,
 } from '@ngrx/store';
 import * as fromRoot from '@app/core/core.state';
 import * as fromAuth from '../reducers/auth.reducer';
@@ -14,12 +15,12 @@ export interface AuthState {
 }
 
 export interface State extends fromRoot.AppState {
-  author: AuthState;
+  auth: AuthState;
 }
 
 export const reducers: ActionReducerMap<
-  AuthState,
-  AuthApiActions.AuthApiActionsUnion
+	AuthState,
+	AuthApiActions.AuthApiActionsUnion
 > = {
   status: fromAuth.reducer,
   loginPage: fromLoginPage.reducer,
@@ -32,7 +33,7 @@ export const selectAuthStatusState = createSelector(
   (state: AuthState) => state.status
 );
 export const getUser = createSelector(selectAuthStatusState, fromAuth.getUser);
-export const getLoggedIn = createSelector(getUser, user => !!user);
+export const selectIsAuthenticated = createSelector(getUser, user => !!user);
 
 export const selectLoginPageState = createSelector(
   selectAuthState,

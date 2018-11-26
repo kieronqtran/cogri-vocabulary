@@ -3,12 +3,13 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { routeAnimations, selectAuth } from '@app/core';
+import { routeAnimations } from '@app/core';
+import { selectIsAuthenticated, State as BaseAuthState } from '@app/auth/reducers';
 import { State as BaseSettingsState } from '@app/settings';
 
 import { State as BaseExamplesState } from '../examples.state';
 
-interface State extends BaseSettingsState, BaseExamplesState {}
+interface State extends BaseSettingsState, BaseExamplesState, BaseAuthState  {}
 
 @Component({
   selector: 'anms-examples',
@@ -33,9 +34,6 @@ export class ExamplesComponent implements OnInit {
   constructor(private store: Store<State>) {}
 
   ngOnInit(): void {
-    this.isAuthenticated$ = this.store.pipe(
-      select(selectAuth),
-      map(auth => auth.isAuthenticated),
-    );
+    this.isAuthenticated$ = this.store.pipe(select(selectIsAuthenticated));
   }
 }

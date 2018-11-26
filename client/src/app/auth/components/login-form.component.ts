@@ -13,7 +13,13 @@ import { Credentials } from '../models/user';
 
 					<div class="row">
 						<mat-form-field class="col">
-							<input matInput placeholder="Email" formControlName="email" type="email">
+							<input
+								matInput
+								placeholder="Email"
+								formControlName="email"
+								type="email"
+								autocomplete="email"
+								/>
 							<mat-error *ngIf="form.get('email').hasError('required')">Email is required</mat-error>
 							<mat-error *ngIf="form.get('email').hasError('email')">Email should be valid</mat-error>
 						</mat-form-field>
@@ -21,7 +27,13 @@ import { Credentials } from '../models/user';
 
 					<div class="row">
 						<mat-form-field class="col">
-							<input matInput placeholder="Password" formControlName="password" type="password">
+							<input
+								matInput
+								placeholder="Password"
+								formControlName="password"
+								type="password"
+								autocomplete="current-password"
+								/>
 							<mat-error *ngIf="form.get('email').hasError('required')">Password is required</mat-error>
 						</mat-form-field>
 					</div>

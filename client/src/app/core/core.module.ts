@@ -15,8 +15,6 @@ import { environment } from '@env/environment';
 
 import { httpInterceptorProviders } from './http-interceptors';
 import { LocalStorageService } from './local-storage/local-storage.service';
-import { AuthEffects } from './auth/auth.effects';
-import { AuthGuardService } from './auth/auth-guard.service';
 import { AnimationsService } from './animations/animations.service';
 import { TitleService } from './title/title.service';
 import { reducers, metaReducers } from './core.state';
@@ -33,7 +31,7 @@ import { NotificationService } from './notifications/notification.service';
     // ngrx
     StoreModule.forRoot(reducers, { metaReducers }),
     StoreRouterConnectingModule.forRoot(),
-    EffectsModule.forRoot([AuthEffects]),
+    EffectsModule.forRoot([]),
     environment.production
       ? []
       : StoreDevtoolsModule.instrument({
@@ -53,7 +51,6 @@ import { NotificationService } from './notifications/notification.service';
   providers: [
     NotificationService,
     LocalStorageService,
-    AuthGuardService,
     AnimationsService,
     httpInterceptorProviders,
     TitleService,

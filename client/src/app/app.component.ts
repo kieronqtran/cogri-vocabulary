@@ -4,13 +4,12 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import {
-  ActionAuthLogin,
-  ActionAuthLogout,
   routeAnimations,
   AppState,
   LocalStorageService,
-  selectIsAuthenticated,
 } from '@app/core';
+import { AuthActions, AuthApiActions } from '@app/auth/actions';
+import { selectIsAuthenticated } from '@app/auth/reducers';
 import { environment as env } from '@env/environment';
 
 import {
@@ -75,11 +74,11 @@ export class AppComponent implements OnInit {
   }
 
   onLoginClick() {
-    this.store.dispatch(new ActionAuthLogin());
+    this.store.dispatch(new AuthApiActions.LoginRedirect());
   }
 
   onLogoutClick() {
-    this.store.dispatch(new ActionAuthLogout());
+    this.store.dispatch(new AuthActions.LogoutConfirmation());
   }
 
   onLanguageSelect({ value: language }) {
