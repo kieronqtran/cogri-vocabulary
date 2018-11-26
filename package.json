@@ -42,6 +42,7 @@
     ]
   },
   "dependencies": {
-    "lint-staged": "^8.0.5"
+    "lint-staged": "^8.0.5",
+    "ngx-cookie-service": "^2.0.0"
   }
 }

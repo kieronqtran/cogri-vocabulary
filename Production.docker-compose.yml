@@ -5,7 +5,7 @@ services:
     container_name: cogri-vocabulary-fe
     build:
       context: client
-      dockerfile: Production.Dockerfile
+      dockerfile: Dockerfile
       target: production
     env_file:
       - ./client/docker.env
@@ -18,7 +18,7 @@ services:
     image: kieronqtran/cogri-vocabulary-api
     build:
       context: server
-      dockerfile: dockerfile
+      dockerfile: Dockerfile
       target: production
     env_file:
       - ./server/docker.env
