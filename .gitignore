@@ -3,5 +3,8 @@
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
-node_modules
+node_modules/
 tmp
+
+client/node_modules/
+server/node_modules/

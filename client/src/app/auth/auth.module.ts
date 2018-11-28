@@ -11,6 +11,7 @@ import { AuthEffects } from './effects/auth.effects';
 import { reducers } from './reducers';
 import { SharedModule } from '@app/shared';
 import { AuthRoutingModule } from './auth-routing.module';
+import { SignUpComponent } from './containers/sign-up.component';
 
 @NgModule({
   imports: [
@@ -22,10 +23,11 @@ import { AuthRoutingModule } from './auth-routing.module';
     EffectsModule.forFeature([AuthEffects]),
   ],
   declarations: [
-		LoginPageComponent,
-		LoginFormComponent,
-		LogoutConfirmationDialogComponent,
-	],
+    SignUpComponent,
+    LoginPageComponent,
+    LoginFormComponent,
+    LogoutConfirmationDialogComponent,
+  ],
   entryComponents: [LogoutConfirmationDialogComponent],
 })
 export class AuthModule {}

@@ -8,7 +8,7 @@ const routes: Routes = [
     path: '',
     redirectTo: 'about',
     pathMatch: 'full',
-	},
+  },
   {
     path: 'settings',
     component: SettingsContainerComponent,
@@ -17,7 +17,7 @@ const routes: Routes = [
   {
     path: 'examples',
     loadChildren: 'app/examples/examples.module#ExamplesModule',
-	},
+  },
   {
     path: '**',
     redirectTo: 'about',
@@ -27,6 +27,7 @@ const routes: Routes = [
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, {
+      useHash: true,
       scrollPositionRestoration: 'enabled',
     }),
   ],

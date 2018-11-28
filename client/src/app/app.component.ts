@@ -1,13 +1,9 @@
 import browser from 'browser-detect';
 import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
-import {
-  routeAnimations,
-  AppState,
-  LocalStorageService,
-} from '@app/core';
+import { routeAnimations, AppState, LocalStorageService } from '@app/core';
 import { AuthActions, AuthApiActions } from '@app/auth/actions';
 import { selectIsAuthenticated } from '@app/auth/reducers';
 import { environment as env } from '@env/environment';
@@ -36,7 +32,8 @@ export class AppComponent implements OnInit {
   navigation = [
     { link: 'about', label: 'anms.menu.about' },
     { link: 'features', label: 'anms.menu.features' },
-		{ link: 'examples', label: 'anms.menu.examples' },
+    { link: 'examples', label: 'anms.menu.examples' },
+    { link: 'signup', label: 'anms.menu.signup' },
   ];
   navigationSideMenu = [
     ...this.navigation,
@@ -66,7 +63,6 @@ export class AppComponent implements OnInit {
         }),
       );
     }
-
     this.isAuthenticated$ = this.store.pipe(select(selectIsAuthenticated));
     this.stickyHeader$ = this.store.pipe(select(selectSettingsStickyHeader));
     this.language$ = this.store.pipe(select(selectSettingsLanguage));
