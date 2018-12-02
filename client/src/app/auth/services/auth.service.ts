@@ -28,6 +28,59 @@ export class AuthService {
     Auth.configure(environment.amplify.Auth);
   }
 
+  loginCallback({
+    access_token,
+    id_token,
+  }: {
+    access_token: string;
+    id_token: string;
+  }): Observable<User> {
+    return new Observable<User>(sub => {
+      try {
+        const user: User = JSON.parse(atob(id_token.split('.')[1]));
+        const cookieOption: Cookie.CookieAttributes = {
+          // domain: `${window.location.origin}`,
+          secure: environment.production,
+        };
+        Cookie.set(
+          `CognitoIdentityServiceProvider.${
+            environment.amplify.Auth.userPoolWebClientId
+          }.${user.sub}.idToken`,
+          id_token,
+          cookieOption,
+        );
+        Cookie.set(
+          `CognitoIdentityServiceProvider.${
+            environment.amplify.Auth.userPoolWebClientId
+          }.${user.sub}.accessToken`,
+          access_token,
+          cookieOption,
+        );
+        Cookie.set(
+          `CognitoIdentityServiceProvider.${
+            environment.amplify.Auth.userPoolWebClientId
+          }.${user.sub}.clockDrift`,
+          '0',
+        );
+        Cookie.set(
+          `CognitoIdentityServiceProvider.${
+            environment.amplify.Auth.userPoolWebClientId
+          }.LastAuthUser`,
+          user.sub,
+        );
+        sub.next(user);
+      } catch (error) {
+        sub.error(error);
+      }
+    }).pipe(
+      tap(e => {
+        Auth.currentSession().then(e => {
+          console.log(e);
+        });
+      }),
+    );
+  }
+
   login({ email, password }: Credentials): Observable<User> {
     return new Observable(subscriber => {
       const cognitoUser = new CognitoUser({
@@ -99,25 +152,12 @@ export class AuthService {
             environment.amplify.Auth.userPoolWebClientId
           }.${userId}.refreshToken`,
         );
-        Cookie.remove(
-          `CognitoIdentityServiceProvider.${
-            environment.amplify.Auth.userPoolWebClientId
-          }.LastAuthUser`,
-        );
         return e;
       }),
     );
   }
 
   signUp(form: SignUpForm) {
-    const attributeList = [];
-
-    const attributeName = new CognitoUserAttribute({
-      Name: 'name',
-      Value: form.name,
-    });
-
-    attributeList.push(attributeName);
     return from(
       Auth.signUp({
         username: form.email,

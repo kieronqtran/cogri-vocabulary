@@ -5,6 +5,7 @@ export enum AuthApiActionTypes {
   LoginSuccess = '[Auth/API] Login Success',
   LoginFailure = '[Auth/API] Login Failure',
   LoginRedirect = '[Auth/API] Login Redirect',
+  SignUpRedirect = '[Auth/API] SignUp Redirect',
 }
 
 export class LoginSuccess implements Action {
@@ -21,6 +22,10 @@ export class LoginFailure implements Action {
 
 export class LoginRedirect implements Action {
   readonly type = AuthApiActionTypes.LoginRedirect;
+}
+
+export class SignUpRedirect implements Action {
+  readonly type = AuthApiActionTypes.SignUpRedirect;
 }
 
 export type AuthApiActionsUnion = LoginSuccess | LoginFailure | LoginRedirect;

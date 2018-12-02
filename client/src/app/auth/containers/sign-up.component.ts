@@ -5,9 +5,8 @@ import { filter, debounceTime, take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 import { ROUTE_ANIMATIONS_ELEMENTS, NotificationService } from '@app/core';
-import { ActionFormReset, ActionFormUpdate } from '../actions/form.actions';
 
-import { State, selectFormState } from '../reducers';
+import * as fromAuth from '.././reducers';
 import { SignUpForm } from '../models/form';
 import {
   SignUpFormUpdate,
@@ -17,69 +16,33 @@ import {
 
 @Component({
   selector: 'anms-sign-up',
-  templateUrl: './sign-up.component.html',
-  styleUrls: ['./sign-up.component.scss'],
+  template: `
+    <anms-sign-up-form
+      (clickReset)="onClickReset()"
+      (submitted)="onSubmit($event)"
+      [pending]="pending$ | async"
+      [errorMessage]="error$ | async"
+    >
+    </anms-sign-up-form>
+  `,
+  styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SignUpComponent implements OnInit {
-  routeAnimationsElements = ROUTE_ANIMATIONS_ELEMENTS;
-
-  form = this.fb.group(
-    {
-      email: [null, [Validators.required, Validators.email]],
-      name: [null, [Validators.required]],
-      password: [null, [Validators.required]],
-      confirmPassword: [null, Validators.compose([Validators.required])],
-    },
-    {
-      validator: this.matchPassword,
-    },
-  );
-
-  formValueChanges$: Observable<SignUpForm>;
+export class SignUpComponent {
+  pending$ = this.store.pipe(select(fromAuth.getSignUpPagePending));
+  error$ = this.store.pipe(select(fromAuth.getSignUpPageError));
 
   constructor(
-    private fb: FormBuilder,
-    private store: Store<State>,
+    private store: Store<fromAuth.State>,
     private notificationService: NotificationService,
   ) {}
 
-  ngOnInit() {
-    this.store
-      .pipe(
-        select(selectFormState),
-        take(1),
-      )
-      .subscribe(form => this.form.patchValue(form));
+  onSubmit(form: SignUpForm) {
+    this.store.dispatch(new SignUp({ form }));
+    this.notificationService.info('Sign Up successful');
   }
 
-  save() {
-    this.store.dispatch(new SignUp({ form: this.form.value }));
-  }
-
-  submit() {
-    if (this.form.valid) {
-      this.save();
-      this.notificationService.info('Sign Up successful');
-    }
-  }
-
-  reset() {
-    this.form.reset();
-    this.form.clearValidators();
-    this.form.clearAsyncValidators();
+  onClickReset() {
     this.store.dispatch(new SignUpFormReset());
-  }
-
-  matchPassword(control: AbstractControl) {
-    const password = control.get('password').value;
-
-    const confirmPassword = control.get('confirmPassword').value;
-
-    if (password !== confirmPassword) {
-      control.get('confirmPassword').setErrors({ ConfirmPassword: true });
-    } else {
-      return null;
-    }
   }
 }

@@ -14,7 +14,7 @@ export function reducer(
   state = initialState,
   action:
     | AuthApiActions.AuthApiActionsUnion
-    | LoginPageActions.LoginPageActionsUnion
+    | LoginPageActions.LoginPageActionsUnion,
 ): State {
   switch (action.type) {
     case LoginPageActions.LoginPageActionTypes.Login: {

@@ -32,11 +32,11 @@ import { NotificationService } from './notifications/notification.service';
     StoreModule.forRoot(reducers, { metaReducers }),
     StoreRouterConnectingModule.forRoot(),
     EffectsModule.forRoot([]),
-    // environment.production
-    //   ? []
-    //   : StoreDevtoolsModule.instrument({
-    //       name: 'Cogri Vocabulary',
-    //     }),
+    environment.production
+      ? []
+      : StoreDevtoolsModule.instrument({
+          name: 'Cogri Vocabulary',
+        }),
 
     // 3rd party
     TranslateModule.forRoot({

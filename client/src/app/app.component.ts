@@ -33,17 +33,22 @@ export class AppComponent implements OnInit {
     { link: 'about', label: 'anms.menu.about' },
     { link: 'features', label: 'anms.menu.features' },
     { link: 'examples', label: 'anms.menu.examples' },
-    { link: 'signup', label: 'anms.menu.signup' },
   ];
   navigationSideMenu = [
     ...this.navigation,
     { link: 'settings', label: 'anms.menu.settings' },
   ];
 
-  isAuthenticated$: Observable<boolean>;
-  stickyHeader$: Observable<boolean>;
-  language$: Observable<string>;
-  theme$: Observable<string>;
+  isAuthenticated$: Observable<boolean> = this.store.pipe(
+    select(selectIsAuthenticated),
+  );
+  stickyHeader$: Observable<boolean> = this.store.pipe(
+    select(selectSettingsStickyHeader),
+  );
+  language$: Observable<string> = this.store.pipe(
+    select(selectSettingsLanguage),
+  );
+  theme$: Observable<string> = this.store.pipe(select(selectEffectiveTheme));
 
   constructor(
     private store: Store<AppState>,
@@ -63,14 +68,14 @@ export class AppComponent implements OnInit {
         }),
       );
     }
-    this.isAuthenticated$ = this.store.pipe(select(selectIsAuthenticated));
-    this.stickyHeader$ = this.store.pipe(select(selectSettingsStickyHeader));
-    this.language$ = this.store.pipe(select(selectSettingsLanguage));
-    this.theme$ = this.store.pipe(select(selectEffectiveTheme));
   }
 
   onLoginClick() {
     this.store.dispatch(new AuthApiActions.LoginRedirect());
+  }
+
+  onSignUpClick() {
+    this.store.dispatch(new AuthApiActions.SignUpRedirect());
   }
 
   onLogoutClick() {

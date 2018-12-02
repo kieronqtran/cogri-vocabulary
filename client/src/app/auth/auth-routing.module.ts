@@ -1,16 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { LoginPageComponent } from './containers/login-page.component';
-import { IsLoggedInGuard } from './services/is-logged-in.guard';
-import { SignUpComponent } from './containers/sign-up.component';
+import { LoginPageCallbackComponent } from './containers/login-page-callback.component';
 
 const routes: Routes = [
   {
-    path: 'login',
-    component: LoginPageComponent,
-    canActivate: [IsLoggedInGuard],
+    path: 'login/callback',
+    component: LoginPageCallbackComponent,
   },
-  { path: 'signup', component: SignUpComponent },
 ];
 
 @NgModule({

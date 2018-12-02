@@ -7,14 +7,14 @@ import {
 import * as fromRoot from '@app/core/core.state';
 import * as fromAuth from '../reducers/auth.reducer';
 import * as fromLoginPage from '../reducers/login-page.reducer';
-import { FormState, formReducer } from './sign-up-page.reducer';
+import * as fromSignUp from './sign-up-page.reducer';
 import { AuthApiActions } from '../actions';
 import { SignUpPageActionsUnion } from '../actions/sign-up-page.actions';
 
 export interface AuthState {
   status: fromAuth.State;
   loginPage: fromLoginPage.State;
-  signUp: FormState;
+  signUp: fromSignUp.State;
 }
 
 export interface State extends fromRoot.AppState {
@@ -24,7 +24,7 @@ export interface State extends fromRoot.AppState {
 export const reducers: ActionReducerMap<AuthState> = {
   status: fromAuth.reducer,
   loginPage: fromLoginPage.reducer,
-  signUp: formReducer,
+  signUp: fromSignUp.reducer,
 };
 
 export const selectAuthState = createFeatureSelector<State, AuthState>('auth');
@@ -46,6 +46,7 @@ export const selectLoginPageState = createSelector(
   selectAuthState,
   (state: AuthState) => state.loginPage,
 );
+
 export const getLoginPageError = createSelector(
   selectLoginPageState,
   fromLoginPage.getError,
@@ -55,7 +56,17 @@ export const getLoginPagePending = createSelector(
   fromLoginPage.getPending,
 );
 
-export const selectFormState = createSelector(
+export const selectSignUpState = createSelector(
   selectAuthState,
   (state: AuthState) => state.signUp,
+);
+
+export const getSignUpPageError = createSelector(
+  selectSignUpState,
+  fromSignUp.getError,
+);
+
+export const getSignUpPagePending = createSelector(
+  selectSignUpState,
+  fromSignUp.getPending,
 );

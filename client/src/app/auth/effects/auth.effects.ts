@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
+import { Location } from '@angular/common';
 import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 
 import { Actions, Effect, ofType, ROOT_EFFECTS_INIT } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { catchError, exhaustMap, map, tap } from 'rxjs/operators';
+import { catchError, exhaustMap, map, tap, switchMap } from 'rxjs/operators';
 import { LoginPageActions, AuthActions, AuthApiActions } from '../actions';
 import { Credentials, User } from '../models/user';
 import { AuthService } from '../services/auth.service';
@@ -17,7 +18,8 @@ import {
   SignUpSuccess,
 } from '../actions/sign-up-page.actions';
 import { SignUpForm } from '../models/form';
-import { LoginSuccess } from '../actions/auth-api.actions';
+import { LoginSuccess, AuthApiActionTypes } from '../actions/auth-api.actions';
+import { environment } from '@env/environment';
 
 @Injectable()
 export class AuthEffects {
@@ -39,11 +41,55 @@ export class AuthEffects {
     tap(() => this.router.navigate(['/'])),
   );
 
+  @Effect()
+  loginCallback$ = this.actions$.pipe(
+    ofType<LoginPageActions.LoginCallback>(
+      LoginPageActions.LoginPageActionTypes.LoginCallback,
+    ),
+    map(action => action.payload),
+    exhaustMap(payload =>
+      this.authService.loginCallback(payload).pipe(
+        map(user => new AuthApiActions.LoginSuccess({ user })),
+        catchError(error => of(new AuthApiActions.LoginFailure({ error }))),
+      ),
+    ),
+  );
+
   @Effect({ dispatch: false })
   loginRedirect$ = this.actions$.pipe(
     ofType(AuthApiActions.AuthApiActionTypes.LoginRedirect),
     tap(authed => {
-      this.router.navigate(['/login']);
+      const { domain, redirectSignIn, responseType } = environment.oauth;
+      const clientId = environment.amplify.Auth.userPoolWebClientId;
+      const url =
+        'https://' +
+        domain +
+        '/login?redirect_uri=' +
+        redirectSignIn +
+        '&response_type=' +
+        responseType +
+        '&client_id=' +
+        clientId;
+      window.open(url, '_self');
+    }),
+  );
+
+  @Effect({ dispatch: false })
+  signUpRedirect$ = this.actions$.pipe(
+    ofType(AuthApiActions.AuthApiActionTypes.SignUpRedirect),
+    tap(authed => {
+      const { domain, redirectSignIn, responseType } = environment.oauth;
+      const clientId = environment.amplify.Auth.userPoolWebClientId;
+      const url =
+        'https://' +
+        domain +
+        '/signup?redirect_uri=' +
+        redirectSignIn +
+        '&response_type=' +
+        responseType +
+        '&client_id=' +
+        clientId;
+      window.open(url, '_self');
     }),
   );
 
@@ -103,6 +149,7 @@ export class AuthEffects {
     private authService: AuthService,
     private router: Router,
     private dialog: MatDialog,
+    private location: Location,
     private localStorageService: LocalStorageService,
   ) {}
 }

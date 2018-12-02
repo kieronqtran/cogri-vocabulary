@@ -1,5 +1,4 @@
-
-import { AuthApiActions, AuthActions } from '../actions';
+import { AuthApiActions, AuthActions, LoginPageActions } from '../actions';
 import { User } from '../models/user';
 import * as Cookie from 'js-cookie';
 import { environment } from '@env/environment';
@@ -13,20 +12,39 @@ export const initialState: State = {
 };
 
 function loadInitialState(): any {
-	const userId = Cookie.get(`CognitoIdentityServiceProvider.${environment.amplify.Auth.userPoolWebClientId}.LastAuthUser`);
-	if (!userId) {
-		return null;
-	}
-	const token = Cookie.get(`CognitoIdentityServiceProvider.${environment.amplify.Auth.userPoolWebClientId}.${userId}.idToken`);
-	const payload = JSON.parse(atob(token.split('.')[1]));
-	return payload;
+  const userId = Cookie.get(
+    `CognitoIdentityServiceProvider.${
+      environment.amplify.Auth.userPoolWebClientId
+    }.LastAuthUser`,
+  );
+  const token = Cookie.get(
+    `CognitoIdentityServiceProvider.${
+      environment.amplify.Auth.userPoolWebClientId
+    }.${userId}.idToken`,
+  );
+  if (!token) {
+    return null;
+  }
+  const payload = JSON.parse(atob(token.split('.')[1]));
+  return payload;
 }
 
 export function reducer(
   state = initialState,
-  action: AuthApiActions.AuthApiActionsUnion | AuthActions.AuthActionsUnion
+  action:
+    | AuthApiActions.AuthApiActionsUnion
+    | AuthActions.AuthActionsUnion
+    | LoginPageActions.LoginPageActionsUnion,
 ): State {
   switch (action.type) {
+    case LoginPageActions.LoginPageActionTypes.LoginCallback: {
+      const user = JSON.parse(atob(action.payload.id_token.split('.')[1]));
+      return {
+        ...state,
+        user: user,
+      };
+    }
+
     case AuthApiActions.AuthApiActionTypes.LoginSuccess: {
       return {
         ...state,
@@ -36,7 +54,7 @@ export function reducer(
 
     case AuthActions.AuthActionTypes.Logout: {
       return { user: null };
-		}
+    }
 
     default: {
       return state;

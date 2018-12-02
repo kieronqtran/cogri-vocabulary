@@ -12,7 +12,6 @@ export enum SignUpPageActionTypes {
 
 export class SignUp implements Action {
   readonly type = SignUpPageActionTypes.SIGNUP;
-
   constructor(public payload: { form: SignUpForm }) {}
 }
 
@@ -38,4 +37,6 @@ export class SignUpFailure implements Action {
 export type SignUpPageActionsUnion =
   | SignUp
   | SignUpFormUpdate
-  | SignUpFormReset;
+  | SignUpFormReset
+  | SignUpSuccess
+  | SignUpFailure;

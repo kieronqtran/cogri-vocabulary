@@ -42,8 +42,15 @@
 						mat-button
 						mat-stroked-button
 						*ngIf="!(isAuthenticated$ | async)"
-						[routerLink]="['/login']"
-						routerLinkActive="active">
+						(click)="onSignUpClick()">
+            {{ 'anms.menu.signup' | translate }}
+          </button>
+
+					<button
+						mat-button
+						mat-stroked-button
+						*ngIf="!(isAuthenticated$ | async)"
+						(click)="onLoginClick()">
             {{ 'anms.menu.login' | translate }}
           </button>
 

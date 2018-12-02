@@ -1,34 +1,34 @@
 import { SignUpForm } from '../models/form';
-import { formReducer, initialState } from './sign-up-page.reducer';
-import { ActionFormUpdate, ActionFormReset } from '../actions/form.actions';
+import { reducer, initialState } from './sign-up-page.reducer';
+import {
+  SignUpFormReset,
+  SignUpFormUpdate,
+} from '../actions/sign-up-page.actions';
 
 describe('FormReducer', () => {
   const form: SignUpForm = {
-    username: 'test',
-    password: 'test',
     email: 'test@test.test',
-    description: 'It is a test.',
-    birthday: new Date(),
-    rating: 10,
+    password: 'test',
+    name: 'Annnora Smeeton',
   };
 
   it('should return the default state', () => {
     const action = {} as any;
-    const state = formReducer(undefined, action);
+    const state = reducer(undefined, action);
     expect(state).toBe(initialState);
   });
 
   it('should update the form', () => {
-    const action = new ActionFormUpdate({
-      form: { ...form, username: 'updated' },
+    const action = new SignUpFormUpdate({
+      form: { ...form },
     });
-    const state = formReducer(initialState, action);
-    expect(state.signUp.username).toBe('updated');
+    const state = reducer(initialState, action);
+    expect(state.signUp.email).toBe('test@test.test');
   });
 
   it('should reset the form', () => {
-    const action = new ActionFormReset();
-    const state = formReducer(undefined, action);
+    const action = new SignUpFormReset();
+    const state = reducer(undefined, action);
     expect(state).toEqual(initialState);
   });
 });

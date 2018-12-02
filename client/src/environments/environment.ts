@@ -7,26 +7,48 @@ const packageJson = require('../../package.json');
 
 export const environment = {
   appName: 'Cogri Vocabulary',
-	envName: 'DEV',
-	apiUrl: `${window.location.origin}/api`,
+  envName: 'DEV',
+  apiUrl: `${window.location.origin}/api`,
   production: false,
   test: false,
-	i18nPrefix: '',
-	amplify: {
+  i18nPrefix: '',
+  amplify: {
     Auth: {
-        identityPoolId: 'us-east-1:06445a57-7db2-4e37-936b-ac2e1bc9044a',
-        region: 'us-east-1',
-        identityPoolRegion: 'us-east-1',
-        userPoolId: 'us-east-1_NRZHxhBEi',
-        userPoolWebClientId: '4a9rqtsq4g3o6vhevbvcho46nv',
-        cookieStorage: {
-            domain: 'localhost',
-            path: '/',
-            expires: 365,
-            secure: false
-				}
-    }
-	},
+      identityPoolId: 'us-east-1:06445a57-7db2-4e37-936b-ac2e1bc9044a',
+      region: 'us-east-1',
+      identityPoolRegion: 'us-east-1',
+      userPoolId: 'us-east-1_NRZHxhBEi',
+      userPoolWebClientId: '4a9rqtsq4g3o6vhevbvcho46nv',
+      cookieStorage: {
+        domain: 'localhost',
+        path: '/',
+        expires: 365,
+        secure: false,
+      },
+    },
+  },
+  oauth: {
+    domain: 'auth.tranhuuquang.me',
+
+    // Authorized scopes
+    scope: [
+      'email',
+      'profile',
+      'openid',
+      'aws.cognito.signin.user.admin',
+      'https://corgi-vocabulary.tranhuuquang.me/word.readonly',
+    ],
+
+    // Callback URL
+    redirectSignIn: 'http://localhost:4200/login/callback',
+
+    // Sign out URL
+    redirectSignOut: 'http://localhost:4200/logout/callback',
+
+    // 'code' for Authorization code grant,
+    // 'token' for Implicit grant
+    responseType: 'token',
+  },
   versions: {
     app: packageJson.version,
     angular: packageJson.dependencies['@angular/core'],
