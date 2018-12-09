@@ -28,7 +28,9 @@ describe('WordModule v1', () => {
 			return request(app.getHttpServer())
 				.get('/')
 				.expect(200)
-				.expect('Hello World!');
+				.expect(res => {
+					expect(res.body).toMatchSnapshot();
+				});
 		});
 	});
 

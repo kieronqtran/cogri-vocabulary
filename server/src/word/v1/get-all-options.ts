@@ -1,4 +1,4 @@
-import { FindManyOptions } from 'typeorm';
+import { FindManyOptions, IsNull, Raw, LessThan, FindConditions } from 'typeorm';
 import { Word } from './word.entity';
 import { Paginate } from './paginate';
 import { FindOptionBuilder } from './find-option-builder';
@@ -12,9 +12,10 @@ export class GetAllOptions extends FindOptionBuilder<Word> {
 	private _counted = 0;
 	private _maxResults = 20;
 	private _nextPageToken: string;
-	private _currentPage: number = 0;
+	private _currentPage: number = 1;
 	private _query: string;
-	private _orderBy: OrderBy = { createdAt: 'DESC' };
+	private _timeStamp: number = Date.now();
+	private _orderBy: OrderBy = { id: 'DESC', createdAt: 'DESC' };
 	private _cursor: string;
 
 	constructor(options?: GetAllOptions) {
@@ -43,8 +44,8 @@ export class GetAllOptions extends FindOptionBuilder<Word> {
 		this.setMaxResults(value);
 	}
 
-	setMaxResults(value: number) {
-		this._maxResults = value;
+	setMaxResults(value: number | string) {
+		this._maxResults = parseInt(value as string, 10);
 		return this;
 	}
 
@@ -86,7 +87,10 @@ export class GetAllOptions extends FindOptionBuilder<Word> {
 				return pre[key[0]] = key[1] ? 'DESC' : 'ASC';
 			}, {}) as { [key in keyof Word]: 'ASC' | 'DESC' };
 		}
-		this._orderBy = value;
+		this._orderBy = {
+			...this._orderBy,
+			...value,
+		};
 		return this;
 	}
 
@@ -99,11 +103,18 @@ export class GetAllOptions extends FindOptionBuilder<Word> {
 
 	buildFindOption(): FindManyOptions<Word> {
 		this.decodeNextPageToken();
+		const condition: FindConditions<Word> = {
+			createdAt: LessThan(new Date(this._timeStamp).toISOString()),
+			deletedAt: IsNull(),
+		};
+		if (this._cursor) {
+			condition.id = LessThan(this._cursor);
+		}
+
 		return {
-			// TODO: convert from offset/limit pagination to cursor pagination
-			skip: this._maxResults * this._currentPage,
 			take: this._maxResults,
 			order: this._orderBy,
+			where: condition,
 		};
 	}
 
@@ -129,16 +140,24 @@ export class GetAllOptions extends FindOptionBuilder<Word> {
 		this._currentPage = nextPageObject.currentPage + 1;
 		this._query = nextPageObject.query;
 		this._orderBy = nextPageObject.orderBy;
+		this._counted = nextPageObject.counted;
+		this._timeStamp = nextPageObject.timeStamp;
 	}
 
 	private encodeNextPageToken(): string {
+		const hasNextPage =  Math.ceil(this._counted / this._maxResults) > this._currentPage;
+		if (!hasNextPage) {
+			return null;
+		}
 		this._cursor = (this._items[this._items.length - 1] || { id: undefined }).id;
 		const nextPageObject = {
 			cursor: this._cursor,
 			maxResults: this._maxResults,
 			currentPage: this._currentPage,
 			query: this._query,
+			counted: this._counted,
 			orderBy: this._orderBy,
+			timeStamp: this._timeStamp,
 		};
 		return Buffer.from(JSON.stringify(nextPageObject)).toString('base64');
 	}

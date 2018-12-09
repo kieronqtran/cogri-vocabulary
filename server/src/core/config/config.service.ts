@@ -34,7 +34,8 @@ export class ConfigService implements TypeOrmOptionsFactory, AuthOptionsFactory 
       database: this.get('DB_DATABASE_NAME'),
       entities: [__dirname + '/../../**/*.entity{.ts,.js}'],
 			synchronize: false,
-			logger: 'debug',
+			logger: 'advanced-console',
+			logging: true,
 			migrations: [`${__dirname}/../../migration/*{.ts,.js}`],
 			migrationsRun: true,
     };

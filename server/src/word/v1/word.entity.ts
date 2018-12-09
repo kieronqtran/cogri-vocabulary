@@ -1,8 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, Index } from 'typeorm';
 
 @Entity({
 	name: 'word',
 })
+@Index(['createdAt', 'id'])
 export class Word {
 
   @PrimaryGeneratedColumn('uuid', {
@@ -57,6 +58,7 @@ export class Word {
 	@Column({
 		name: 'deleted_at',
 		nullable: true,
+		select: false,
 	})
 	deletedAt?: Date;
 }

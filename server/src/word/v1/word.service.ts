@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { WordRepository } from './word.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateWordDto, UpdateWordDto } from './word.dto';
-import { Raw } from 'typeorm';
+import { Raw, IsNull } from 'typeorm';
 import { GetAllOptions } from './get-all-options';
 
 @Injectable()
@@ -14,7 +14,7 @@ export class WordService {
 	async getById(id: string) {
 		return this.wordRepository.findOneOrFail(id, {
 			where: {
-				deletedAt: (alias) => Raw(`${alias} IS NULL OR ${alias} > ${new Date().toISOString()}`),
+				deletedAt: IsNull(),
 			},
 		});
 	}
@@ -24,23 +24,39 @@ export class WordService {
 			options = new GetAllOptions(options);
 		}
 		const query = options.buildFindOption();
-		const [entities, counted] = await this.wordRepository.findAndCount(query);
-		const result = options
-			.setItems(entities)
-			.setCounted(counted)
-			.buildResult();
-		return result;
+		if (options.nextPageToken) {
+			const entities = await this.wordRepository.find(query);
+			options.setItems(entities);
+		} else {
+			const [entities, counted] = await this.wordRepository.findAndCount(query);
+			options
+				.setItems(entities)
+				.setCounted(counted);
+		}
+		return options.buildResult();
 	}
 
 	async create(entity: CreateWordDto) {
-		return this.wordRepository.insert(entity);
+		const result = await this.wordRepository.insert(entity);
+		const id = result.identifiers.shift();
+		return this.wordRepository.findOne(id);
 	}
 
 	async update(id: string, entity: UpdateWordDto) {
-		return this.wordRepository.update(id, entity);
+		const result = await this.wordRepository.update(id, entity);
+		return this.wordRepository.findOne(id);
+	}
+
+	async patch(id: string, entity: UpdateWordDto) {
+		const result = await this.wordRepository.findOneOrFail(id);
+		const merged = this.wordRepository.merge(result, entity);
+		const updated = await this.wordRepository.update(merged.id, merged);
+		return merged;
 	}
 
 	async delete(id: string) {
-		return this.wordRepository.delete(id);
+		await this.wordRepository.update(id, {
+			deletedAt: new Date(),
+		});
 	}
 }

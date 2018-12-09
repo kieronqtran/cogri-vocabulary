@@ -7,6 +7,7 @@ import {
   Put,
   Delete,
   Query,
+	Patch,
 } from '@nestjs/common';
 import { WordService } from './word.service';
 import { CreateWordDto, UpdateWordDto } from './word.dto';
@@ -46,8 +47,13 @@ export class WordController {
     return this.wordService.update(id, entity);
   }
 
-  @Delete()
+	@Patch(':id')
+  async patch(@Param('id') id: string, @Body() entity: UpdateWordDto) {
+    return this.wordService.patch(id, entity);
+  }
+
+  @Delete(':id')
   async delete(@Param('id') id: string) {
-    return this.wordService.delete(id);
+    await this.wordService.delete(id);
   }
 }
