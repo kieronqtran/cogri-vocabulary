@@ -3,23 +3,18 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './auth/jwt.strategy';
 import { KeyCacheService } from './auth/key-cache.service';
 import { ConfigService } from './config/config.service';
-import { LoggerService } from './logger/logger.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Global()
 @Module({
 	imports: [
-		PassportModule.register({ defaultStrategy: 'jwt', session: false }),
-		HttpModule,
+		PassportModule.registerAsync({ useClass: ConfigService }),
+		TypeOrmModule.forRootAsync({ useClass: ConfigService }),
+		HttpModule.register({}),
 	],
 	providers: [
 		JwtStrategy,
 		KeyCacheService,
-    {
-      provide: ConfigService,
-      useValue: new ConfigService('.env'),
-		},
-		LoggerService,
 	],
-	exports: [ConfigService],
 })
 export class CoreModule {}

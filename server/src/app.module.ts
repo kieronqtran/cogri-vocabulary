@@ -1,17 +1,24 @@
-import { Module, HttpModule, HttpService } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { Module, HttpModule } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { CoreModule } from './core/core.module';
 import { JwtAuthGuard } from './components/guard/auth.guard';
+import { AppModule as WordModule } from './word/app.module';
+import { ConfigService } from './core';
+import { RouterModule } from 'nest-router';
+import { routes } from './routes';
 
 @Module({
   imports: [
 		CoreModule,
+		WordModule,
+		HttpModule,
+		RouterModule.forRoutes(routes),
 	],
-  controllers: [AppController],
 	providers: [
-		AppService,
+		{
+			provide: ConfigService,
+      useValue: new ConfigService(),
+		},
 		{
 			provide: APP_GUARD,
 			useClass: JwtAuthGuard,
