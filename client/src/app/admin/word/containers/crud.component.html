@@ -9,7 +9,7 @@
 		<div class="col-md-12">
 			<anms-work-preview-list
 				[words]="words$ | async"
-				(tableScroll)="nextCollection($event)"
+				(tableScroll)="nextCollection()"
 				(deleteBtn)="onClickDelete($event)"
 				(updateBtn)="onClickUpdate($event)"
 			></anms-work-preview-list>

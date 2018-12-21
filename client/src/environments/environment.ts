@@ -37,6 +37,7 @@ export const environment = {
       'openid',
       'aws.cognito.signin.user.admin',
       'https://corgi-vocabulary.tranhuuquang.me/word.readonly',
+      'https://corgi-vocabulary.tranhuuquang.me/word',
     ],
 
     // Callback URL
