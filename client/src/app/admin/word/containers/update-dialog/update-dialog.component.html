@@ -1,0 +1,56 @@
+<h2 mat-dialog-title>Update</h2>
+<mat-dialog-content>
+	<form [formGroup]="form" (ngSubmit)="submit()">
+		<div class="row justify-content-center">
+			<div class="col-md-12">
+				<div class="row">
+					<mat-form-field class="col">
+						<input matInput placeholder="Word" formControlName="word">
+						<mat-error *ngIf="form.get('word').invalid">
+							Word is invalid
+						</mat-error>
+					</mat-form-field>
+				</div>
+
+				<div class="row">
+					<mat-form-field class="col">
+						<input matInput placeholder="Vietnamese Meaning" formControlName="vietnameseMeaning">
+						<mat-error *ngIf="form.get('vietnameseMeaning').invalid">
+							Word is invalid
+						</mat-error>
+					</mat-form-field>
+				</div>
+
+				<div class="row" formArrayName="similarWords" *ngFor="let sw of similarWords.controls; let i = index">
+					<mat-form-field class="col">
+						<input matInput placeholder="Similar Word {{ i+1 }}" [formControlName]="i"/>
+						<button type="button" matSuffix mat-stroked-button (click)="deleteSimilarWord(i)">Delete</button>
+					</mat-form-field>
+				</div>
+
+				<div class="row" style="margin-bottom: 10px;">
+					<div class="col">
+						<button mat-stroked-button (click)="addNewSimilarWords()">Add new Similar Words</button>
+					</div>
+				</div>
+
+				<div class="row" formArrayName="examples" *ngFor="let sw of examples.controls; let i = index">
+					<mat-form-field class="col">
+						<input matInput placeholder="Examples {{ i+1 }}" [formControlName]="i"/>
+						<button type="button" matSuffix mat-stroked-button (click)="deleteExample(i)">Delete</button>
+					</mat-form-field>
+				</div>
+
+				<div class="row" style="margin-bottom: 10px;">
+					<div class="col">
+						<button mat-stroked-button (click)="addNewExamples()">Add new Examples</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+</mat-dialog-content>
+<mat-dialog-actions>
+	<button mat-button (click)="cancel()">Cancel</button>
+	<button mat-button (click)="submit()">Update</button>
+</mat-dialog-actions>

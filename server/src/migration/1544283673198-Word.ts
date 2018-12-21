@@ -9,11 +9,11 @@ export class Word1544283673198 implements MigrationInterface {
         columns: [
           {
             name: 'id',
-            type: 'varchar',
-            length: '36',
+						type: 'int',
+						unsigned: true,
             isPrimary: true,
             isGenerated: true,
-            generationStrategy: 'uuid' as 'uuid',
+            generationStrategy: 'increment',
           },
           {
             name: 'word',

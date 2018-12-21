@@ -1,0 +1,34 @@
+<div class="example-container mat-elevation-z8">
+  <mat-table #table [dataSource]="words" (scroll)="onTableScroll($event)">
+
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+		<ng-container matColumnDef="index">
+			<mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+			<mat-cell *matCellDef="let element; let i = index;">{{i+1}}</mat-cell>
+		</ng-container>
+    <!-- Position Column -->
+    <ng-container matColumnDef="word">
+      <mat-header-cell *matHeaderCellDef> Word </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.word}} </mat-cell>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="vietnameseMeaning">
+      <mat-header-cell *matHeaderCellDef> Vietnamese Meaning </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.vietnameseMeaning}} </mat-cell>
+    </ng-container>
+
+    <!-- Symbol Column -->
+		<ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef>  </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+					<button mat-button (click)="onUpdateBtnClick(element.id)">Update</button>
+					<button mat-button (click)="onDeleteBtnClick(element.id)">Delete</button>
+			</mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns; let i = index"></mat-row>
+  </mat-table>
+</div>

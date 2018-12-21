@@ -16,7 +16,7 @@ export class GetAllOptions extends FindOptionBuilder<Word> {
 	private _query: string;
 	private _timeStamp: number = Date.now();
 	private _orderBy: OrderBy = { id: 'DESC', createdAt: 'DESC' };
-	private _cursor: string;
+	private _cursor: number;
 
 	constructor(options?: GetAllOptions) {
 		super();

@@ -3,7 +3,7 @@ import { StoreModule, Store, combineReducers } from '@ngrx/store';
 import { cold } from 'jasmine-marbles';
 import { AuthGuard } from './services/auth-guard.service';
 import { AuthApiActions } from '../actions';
-// import * as fromRoot from '@example-app/reducers';
+// import * as fromRoot from './reducers';
 import * as fromAuth from '../reducers';
 
 describe('Auth Guard', () => {

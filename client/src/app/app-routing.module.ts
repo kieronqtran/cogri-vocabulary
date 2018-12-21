@@ -19,6 +19,10 @@ const routes: Routes = [
     loadChildren: 'app/examples/examples.module#ExamplesModule',
   },
   {
+    path: 'admin',
+    loadChildren: './admin/admin.module#AdminModule',
+  },
+  {
     path: '**',
     redirectTo: 'about',
   },

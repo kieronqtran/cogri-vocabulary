@@ -6,10 +6,10 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateCol
 @Index(['createdAt', 'id'])
 export class Word {
 
-  @PrimaryGeneratedColumn('uuid', {
+  @PrimaryGeneratedColumn('increment', {
 		name: 'id',
 	})
-  id: string;
+  id: number;
 
   @Column({
 		name: 'word',
@@ -32,14 +32,14 @@ export class Word {
 
   @Column({
 		name: 'similar_words',
-		type: 'simple-array',
+		type: 'simple-json',
 		default: [],
 	})
 	similarWords: string[];
 
 	@Column({
 		name: 'examples',
-		type: 'simple-array',
+		type: 'simple-json',
 		default: [],
 	})
 	examples: string[];
