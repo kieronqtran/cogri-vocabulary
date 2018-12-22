@@ -1,0 +1,38 @@
+<div class="container">
+	<div class="row">
+		<div class="col">
+			<mat-horizontal-stepper [linear]="false" labelPosition="bottom" #stepper (selectionChange)="selectionChange($event)">
+					<mat-step *ngFor="let word of words; let i = index">
+						<ng-template matStepLabel>Word number {{ i+1 }}</ng-template>
+						<div class="d-flex justify-content-center">
+							<mat-card class="word-card">
+								<mat-card-header>
+									<mat-card-title>{{ word.word }}</mat-card-title>
+									<mat-card-subtitle>Vietnamese Meaning: {{ word.vietnameseMeaning }}</mat-card-subtitle>
+								</mat-card-header>
+								<mat-card-content>
+									<mat-list>
+										<h3 mat-subheader>Similar Words</h3>
+										<mat-list-item *ngFor="let folder of word.similarWords; let j = index;">
+											<mat-icon mat-list-icon>filter_{{j + 1}}</mat-icon>
+											<h4 mat-line>{{folder}}</h4>
+										</mat-list-item>
+										<h3 mat-subheader>Examples</h3>
+										<mat-list-item *ngFor="let note of word.examples; let j = index;">
+											<mat-icon mat-list-icon>filter_{{j + 1}}</mat-icon>
+											<h4 mat-line>{{note}}</h4>
+										</mat-list-item>
+									</mat-list>
+								</mat-card-content>
+								<mat-card-actions [align]="'end'">
+									<button *ngIf="i > 0" mat-button matStepperPrevious>Back</button>
+									<button *ngIf="i < words.length - 1" mat-button matStepperNext>Next</button>
+									<button *ngIf="i === words.length - 1" mat-button (click)="onClickDone()">Done</button>
+								</mat-card-actions>
+							</mat-card>
+						</div>
+					</mat-step>
+				</mat-horizontal-stepper>
+		</div>
+	</div>
+</div>

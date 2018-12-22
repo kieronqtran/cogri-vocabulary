@@ -36,7 +36,13 @@
               routerLinkActive="active">
               {{item.label | translate}}
             </button>
-            <button mat-button class="nav-button"[routerLink]="['admin', 'word']"
+						<button mat-button class="nav-button"
+							[routerLink]="['learn']"
+							routerLinkActive="active">
+							Learn
+            </button>
+						<button mat-button class="nav-button"
+							[routerLink]="['admin', 'word']"
 							routerLinkActive="active">
 							Word CRUD
             </button>

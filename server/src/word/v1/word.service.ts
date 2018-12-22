@@ -13,16 +13,20 @@ export class WordService {
 	) {}
 
 	async getARandomWord() {
-		const builder = this.wordRepository.createQueryBuilder('word1');
-		builder.innerJoin((qb: SelectQueryBuilder<Word>) => {
-			const builder2 = this.wordRepository.createQueryBuilder('id')
-				.select('MAX(id)');
-			qb.select(`CEIL(RAND() * ${builder2.getSql()})`);
-			return qb.subQuery();
-		}, 'word2');
-		builder.where('word1.id >= word2.id');
-		builder.orderBy('id', 'ASC');
-		return builder.getOne();
+		// Can't use queryBuilder or normal find method for this get random rows
+		const query = `SELECT DISTINCT * FROM word WHERE deleted_at IS NULL ORDER BY RAND() LIMIT 10`;
+		const builder = await this.wordRepository.manager.query(query);
+		return builder.map(e => {
+			const word = new Word();
+			word.id = e.id;
+			word.word = e.word;
+			word.vietnameseMeaning = e.vietnamese_meaning;
+			word.similarWords = JSON.parse(e.similar_words);
+			word.examples = JSON.parse(e.examples);
+			word.createdAt = e.created_at;
+			word.updatedAt = e.updated_at;
+			return word;
+		});
 	}
 
 	async getById(id: string) {
