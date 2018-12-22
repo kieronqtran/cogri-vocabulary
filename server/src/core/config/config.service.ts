@@ -1,14 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, CacheOptionsFactory, CacheModuleOptions } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import { AuthOptionsFactory, IAuthModuleOptions } from '@nestjs/passport';
+import * as redisStore from 'cache-manager-redis-store';
 
 export interface EnvConfig {
   [key: string]: string;
 }
 
-export class ConfigService implements TypeOrmOptionsFactory, AuthOptionsFactory {
+export class ConfigService implements TypeOrmOptionsFactory, AuthOptionsFactory, CacheOptionsFactory {
   private readonly envConfig: EnvConfig;
 
   constructor(filePath: string = `${__dirname}/../../../.env`) {
@@ -38,10 +39,27 @@ export class ConfigService implements TypeOrmOptionsFactory, AuthOptionsFactory 
 			logging: true,
 			migrations: [`${__dirname}/../../migration/*{.ts,.js}`],
 			migrationsRun: true,
+			cache: {
+				type: 'redis',
+        options: {
+					host: this.get('REDIS_HOST'),
+					port: parseInt(this.get('REDIS_PORT'), 10),
+        },
+			},
     };
 	}
 
 	createAuthOptions(): IAuthModuleOptions<any> {
 		return { defaultStrategy: 'jwt', session: false };
+	}
+
+	createCacheOptions(): Promise<CacheModuleOptions> | CacheModuleOptions {
+		return {
+			store: redisStore,
+			host: this.get('REDIS_HOST'),
+			port: parseInt(this.get('REDIS_PORT'), 10),
+			ttl: 100,
+			max: 10,
+		};
 	}
 }

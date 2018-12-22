@@ -1,5 +1,5 @@
-import { Module, HttpModule } from '@nestjs/common';
-import { APP_GUARD } from '@nestjs/core';
+import { Module, HttpModule, CacheInterceptor } from '@nestjs/common';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { CoreModule } from './core/core.module';
 import { JwtAuthGuard } from './components/guard/auth.guard';
 import { AppModule as WordModule } from './word/app.module';
@@ -23,6 +23,10 @@ import { routes } from './routes';
 			provide: APP_GUARD,
 			useClass: JwtAuthGuard,
 		},
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: CacheInterceptor,
+    },
 	],
 })
 export class AppModule {}

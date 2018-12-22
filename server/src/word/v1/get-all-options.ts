@@ -115,6 +115,7 @@ export class GetAllOptions extends FindOptionBuilder<Word> {
 			take: this._maxResults,
 			order: this._orderBy,
 			where: condition,
+			cache: true,
 		};
 	}
 
