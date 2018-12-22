@@ -2,14 +2,28 @@ import { Injectable } from '@nestjs/common';
 import { WordRepository } from './word.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateWordDto, UpdateWordDto } from './word.dto';
-import { Raw, IsNull } from 'typeorm';
+import { Raw, IsNull, SelectQueryBuilder } from 'typeorm';
 import { GetAllOptions } from './get-all-options';
+import { Word } from './word.entity';
 
 @Injectable()
 export class WordService {
 	constructor(
 		@InjectRepository(WordRepository) private readonly wordRepository: WordRepository,
 	) {}
+
+	async getARandomWord() {
+		const builder = this.wordRepository.createQueryBuilder('word1');
+		builder.innerJoin((qb: SelectQueryBuilder<Word>) => {
+			const builder2 = this.wordRepository.createQueryBuilder('id')
+				.select('MAX(id)');
+			qb.select(`CEIL(RAND() * ${builder2.getSql()})`);
+			return qb.subQuery();
+		}, 'word2');
+		builder.where('word1.id >= word2.id');
+		builder.orderBy('id', 'ASC');
+		return builder.getOne();
+	}
 
 	async getById(id: string) {
 		return this.wordRepository.findOneOrFail(id, {

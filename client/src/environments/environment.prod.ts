@@ -9,11 +9,11 @@ export const environment = {
   apiUrl: `${window.location.origin}/api`,
   amplify: {
     Auth: {
-      identityPoolId: 'us-east-1_NRZHxhBEi',
+      identityPoolId: 'us-east-us-east-1:06445a57-7db2-4e37-936b-ac2e1bc9044a',
       region: 'us-east-1',
       identityPoolRegion: 'us-east-1',
       userPoolId: 'us-east-1_NRZHxhBEi',
-      userPoolWebClientId: '2749ghbf9qp5npco089l0vfh6',
+      userPoolWebClientId: '4a9rqtsq4g3o6vhevbvcho46nv',
       cookieStorage: {
         domain: 'cogri-vocabulary.tranhuuquang.me',
         path: '/',

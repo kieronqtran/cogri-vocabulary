@@ -10,6 +10,10 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   {
+    path: 'learn',
+    loadChildren: 'app/learn/learn.module#LearnModule',
+  },
+  {
     path: 'settings',
     component: SettingsContainerComponent,
     data: { title: 'anms.menu.settings' },

@@ -10,8 +10,8 @@
       "prefix": "anms",
       "schematics": {
         "@schematics/angular:component": {
-					"changeDetection": "OnPush",
-					"styleext": "scss"
+          "changeDetection": "OnPush",
+          "styleext": "scss"
         }
       },
       "architect": {
@@ -36,8 +36,12 @@
               }
             ],
             "styles": [
-              { "input": "src/styles-app-loading.scss" },
-              { "input": "src/styles.scss" }
+              {
+                "input": "src/styles-app-loading.scss"
+              },
+              {
+                "input": "src/styles.scss"
+              }
             ],
             "scripts": []
           },
@@ -65,7 +69,7 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "cogri-vocabulary:build",
-						"proxyConfig": "src/proxy.conf.js"
+            "proxyConfig": "src/proxy.conf.js"
           },
           "configurations": {
             "production": {
@@ -153,5 +157,8 @@
       }
     }
   },
-  "defaultProject": "cogri-vocabulary"
+  "defaultProject": "cogri-vocabulary",
+  "cli": {
+    "defaultCollection": "@ngrx/schematics"
+  }
 }

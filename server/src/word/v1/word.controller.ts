@@ -17,6 +17,11 @@ import { GetAllOptions } from './get-all-options';
 export class WordController {
   constructor(private readonly wordService: WordService) {}
 
+	@Get('random')
+  async getRandom() {
+    return this.wordService.getARandomWord();
+  }
+
   @Get(':id')
   async getById(@Param('id') id: string) {
     return this.wordService.getById(id);
