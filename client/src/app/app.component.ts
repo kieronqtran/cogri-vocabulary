@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 
 import { routeAnimations, AppState, LocalStorageService } from '@app/core';
 import { AuthActions, AuthApiActions } from '@app/auth/actions';
-import { selectIsAuthenticated } from '@app/auth/reducers';
+import { selectIsAuthenticated, selectIsAdmin } from '@app/auth/reducers';
 import { environment as env } from '@env/environment';
 
 import {
@@ -32,7 +32,6 @@ export class AppComponent implements OnInit {
   navigation = [
     { link: 'about', label: 'anms.menu.about' },
     { link: 'features', label: 'anms.menu.features' },
-    { link: 'examples', label: 'anms.menu.examples' },
   ];
   navigationSideMenu = [
     ...this.navigation,
@@ -42,6 +41,9 @@ export class AppComponent implements OnInit {
   isAuthenticated$: Observable<boolean> = this.store.pipe(
     select(selectIsAuthenticated),
   );
+
+  isAdmin$: Observable<boolean> = this.store.pipe(select(selectIsAdmin));
+
   stickyHeader$: Observable<boolean> = this.store.pipe(
     select(selectSettingsStickyHeader),
   );

@@ -22,7 +22,6 @@
         <mat-toolbar color="primary">
           <button mat-icon-button class="d-md-none" (click)="sidenav.open()">
             <fa-icon icon="bars"></fa-icon>
-
           </button>
 
           <span routerLink="" class="branding spacer center d-inline d-sm-none">
@@ -32,16 +31,28 @@
           <span routerLink="" class="branding spacer d-none d-md-inline"><img [src]="logo" /> {{ 'anms.title.long' | translate }}</span>
 
           <span class="d-none d-md-inline">
-            <button mat-button class="nav-button" *ngFor="let item of navigation" [routerLink]="[item.link]"
-              routerLinkActive="active">
-              {{item.label | translate}}
-            </button>
 						<button mat-button class="nav-button"
+							[routerLink]="['home']"
+							routerLinkActive="active">
+							Home
+						</button>
+						<button mat-button class="nav-button"
+							[routerLink]="['features']"
+							routerLinkActive="active">
+							Tech Stack
+            </button>
+						<button
+						*ngIf="(isAuthenticated$ | async)"
+							mat-button class="nav-button"
 							[routerLink]="['learn']"
 							routerLinkActive="active">
 							Learn
             </button>
-						<button mat-button class="nav-button"
+						<button
+							*ngIf="(isAuthenticated$ | async)"
+							[disabled]="!(isAdmin$ | async)"
+							matTooltip="Admin only page"
+							mat-button class="nav-button"
 							[routerLink]="['admin', 'word']"
 							routerLinkActive="active">
 							Word CRUD
@@ -84,7 +95,7 @@
              matTooltipPosition="before"
              mat-icon-button
              class="link d-none d-sm-inline"
-             href="https://github.com/tomastrajan/angular-ngrx-material-starter"
+             href="https://github.com/kieronqtran/cogri-vocabulary"
              target="_blank">
             <fa-icon [icon]="['fab','github']"></fa-icon>
           </a>
@@ -105,11 +116,11 @@
       <div class="footer">
         <div class="row">
           <div class="col-12 signature">
-            &#169; <span class="year" data-testid="footer-year">{{year}}</span> - Tomas Trajan
+						&#169; <span class="year" data-testid="footer-year">{{year}}</span> - Tran Huu Quang - s3651520
             <br class="d-block d-sm-none">
             <a [matTooltip]="'anms.footer.changelog' | translate"
                matTooltipPosition="before"
-               href="https://github.com/tomastrajan/angular-ngrx-material-starter/blob/master/CHANGELOG.md">
+               href="https://github.com/kieronqtran/cogri-vocabulary">
               <fa-icon icon="rocket"></fa-icon>
               {{version}} <span *ngIf="!isProd">[{{envName}}]</span>
             </a>

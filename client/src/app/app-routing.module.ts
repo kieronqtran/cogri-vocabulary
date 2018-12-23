@@ -2,16 +2,19 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { SettingsContainerComponent } from './settings';
+import { IsAdminGuard } from './auth/guards/is-admin.guard';
+import { IsAuthenticatedGuard } from './auth/guards/is-authenticated.guard';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'about',
+    redirectTo: 'home',
     pathMatch: 'full',
   },
   {
     path: 'learn',
     loadChildren: 'app/learn/learn.module#LearnModule',
+    canActivate: [IsAuthenticatedGuard],
   },
   {
     path: 'settings',
@@ -19,16 +22,13 @@ const routes: Routes = [
     data: { title: 'anms.menu.settings' },
   },
   {
-    path: 'examples',
-    loadChildren: 'app/examples/examples.module#ExamplesModule',
-  },
-  {
     path: 'admin',
     loadChildren: './admin/admin.module#AdminModule',
+    canActivate: [IsAuthenticatedGuard, IsAdminGuard],
   },
   {
     path: '**',
-    redirectTo: 'about',
+    redirectTo: 'home',
   },
 ];
 

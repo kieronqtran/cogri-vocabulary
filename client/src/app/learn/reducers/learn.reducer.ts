@@ -3,7 +3,6 @@ import { Learn } from '../models/learn.model';
 import { LearnActions, LearnActionTypes } from '../actions/learn.actions';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Word } from '@app/admin/word/models/word';
-import { getLearnState, getLearnEntityState } from '.';
 
 export interface State extends EntityState<Word> {
   loaded: boolean;
@@ -71,10 +70,3 @@ export function reducer(state = initialState, action: LearnActions): State {
     }
   }
 }
-
-export const {
-  selectIds: selectRandomWordIds,
-  selectEntities: selectRandomWordEntities,
-  selectAll: selectRandomWordAll,
-  selectTotal: selectRandomWordTotal,
-} = adapter.getSelectors(getLearnEntityState);

@@ -6,7 +6,7 @@ import { FeaturesComponent } from './features/features.component';
 
 const routes: Routes = [
   {
-    path: 'about',
+    path: 'home',
     component: AboutComponent,
     data: { title: 'anms.menu.about' },
   },

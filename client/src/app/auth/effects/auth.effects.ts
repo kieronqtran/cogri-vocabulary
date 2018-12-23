@@ -53,6 +53,7 @@ export class AuthEffects {
         catchError(error => of(new AuthApiActions.LoginFailure({ error }))),
       ),
     ),
+    tap(() => this.router.navigate(['/learn'])),
   );
 
   @Effect({ dispatch: false })

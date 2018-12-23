@@ -27,3 +27,10 @@ export const getLearnEntityState = createSelector(
   getLearnState,
   state => state.wordEntity,
 );
+
+export const {
+  selectIds: selectRandomWordIds,
+  selectEntities: selectRandomWordEntities,
+  selectAll: selectRandomWordAll,
+  selectTotal: selectRandomWordTotal,
+} = fromLearnEntity.adapter.getSelectors(getLearnEntityState);
