@@ -17,7 +17,7 @@ module.exports = async () => {
 
 	const manager = await getSqljsManager();
 	const rawDb = manager.exportDatabase();
-  // Set reference to mongod in order to close the server during teardown.
+  // Set reference to mongod in order to close the word during teardown.
 	global.__SQLJS__ = rawDb;
 	await connection.close();
 };

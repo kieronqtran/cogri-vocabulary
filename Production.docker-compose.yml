@@ -14,13 +14,24 @@ services:
       - PORT=4200
     ports:
       - '4200:4200'
-  api:
-    image: kieronqtran/cogri-vocabulary-api
+  word:
+    image: kieronqtran/cogri-vocabulary-word
     build:
-      context: server
+      context: word
       dockerfile: Dockerfile
       target: production
     env_file:
-      - ./server/docker.env
+      - word/docker.env
     environment:
      - NODE_ENV=production
+
+  learner:
+    image: kieronqtran/cogri-vocabulary-learner
+    build:
+      context: learner
+      dockerfile: Dockerfile
+      target: production
+    env_file:
+      - leaner/docker.env
+    environment:
+      - NODE_ENV=production

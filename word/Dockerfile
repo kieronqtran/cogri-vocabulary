@@ -20,15 +20,27 @@ WORKDIR /usr/src/app
 RUN npm run build:prod
 
 FROM node:dubnium-alpine as production
-# Copy the dist folder from builder
-COPY --from=builder /usr/src/app/dist /usr/src/app/dist
-COPY --from=builder /usr/src/app/server.js /usr/src/app/server.js
+
+ENV NODE_ENV production
+
+# Install app dependencies
+ENV NPM_CONFIG_LOGLEVEL warn
+
+# Manually copy the package.json
+COPY ./package.json /usr/src/app/package.json
+COPY ./package-lock.json /usr/src/app/package-lock.json
 # Set the work directory to where we copied our source files
 WORKDIR /usr/src/app
-RUN npm install compression@1.7.3
-RUN npm install express@4.16.4
-# Create 2 empty environment variables
-ENV CONTEXT=
-ENV PORT=
-# Run the node word which should be used for production
-CMD ["node", "server.js"]
+
+# RUN npm install
+# If you are building your code for production
+RUN npm install --production && mkdir -p /usr/app/dist
+
+COPY ecosystem.config.js .
+
+# Bundle app source
+COPY --from=builder /usr/src/app/dist /usr/src/app/dist
+
+EXPOSE 3000
+
+CMD [ "npm", "run", "start:prod" ]
