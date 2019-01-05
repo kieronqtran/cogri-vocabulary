@@ -14,11 +14,11 @@ export class SendEmailService implements OnModuleInit {
 	private readonly logger = LoggerService.createLogger(SendEmailService.name);
 	private readonly sendEmailQueue: Queue<SendEmailSubscriptionData> = new Bull(`${this.queueName}:send-email`, { redis: this.config.redis });
 	private readonly cornQueue: Queue<{ email: string; name: string }[]> = new Bull(`${this.queueName}:corn`, { redis: this.config.redis });
+
 	constructor(
 		@Inject(SUBSCRIPTION_MODULE_OPTIONS) private readonly config: SubscriptionModuleOptions,
 		@Inject(SUBSCRIPTION_JOB) private readonly queueName: string,
-	) {
-	}
+	) { }
 
 	async onModuleInit() {
 		await this.startJob();
@@ -32,11 +32,13 @@ export class SendEmailService implements OnModuleInit {
 			const emailLists = await this.getUsers();
 			emailLists.forEach(({email, name}) => {
 				self.logger.log(`Create a job to send email to ${email}`);
+				const subject = `[Cogri Vocabulary] Hello ${name}!`;
+				const context = {};
 				self.sendEmailQueue.add({
-					context: {},
+					context,
 					template,
 					to: email,
-					subject: `[Cogri Vocabulary] Hello ${name}!`,
+					subject,
 				}, {
 					removeOnComplete: true,
 					attempts: 5,
@@ -44,8 +46,17 @@ export class SendEmailService implements OnModuleInit {
 			});
 		});
 		const counted = await this.cornQueue.getRepeatableJobs();
-		this.logger.log(`${counted} sending email job is running`);
-		if (counted.length === 0) {
+		const job = counted.pop();
+		this.logger.log(`${job.name} sending email job is running`);
+		if (!job) {
+			this.cornQueue.add(null, { repeat: { cron: defaultCron , tz }});
+		}
+		if (job.cron !== defaultCron) {
+			await this.cornQueue.removeRepeatable({
+				jobId: job.id,
+				cron: job.cron,
+				tz: job.tz,
+			});
 			this.cornQueue.add(null, { repeat: { cron: defaultCron , tz }});
 		}
 	}

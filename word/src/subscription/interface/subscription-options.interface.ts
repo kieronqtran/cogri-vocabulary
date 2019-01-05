@@ -1,7 +1,6 @@
 import { ModuleMetadata, Type, Provider } from '@nestjs/common/interfaces';
 import { Credentials } from 'aws-sdk';
 import * as Queue from 'bull';
-import { MailerModuleOptions } from '@nest-modules/mailer';
 
 export interface SubscriptionModuleOptions {
 	email: string;
@@ -11,7 +10,10 @@ export interface SubscriptionModuleOptions {
 		region: string,
 		userPoolId: string,
 	};
-	mailer: MailerModuleOptions;
+	mailer: {
+    transport?: any;
+    defaults?: any;
+  };
 	defaultCron: string;
 	queueKey?: string;
 	processes?: number;

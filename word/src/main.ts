@@ -7,6 +7,9 @@ import { Logger } from '@nestjs/common';
 async function bootstrap() {
 	const logger = new Logger('Main');
 	const app = await NestFactory.create(AppModule);
+	// NestFactory.createMicroservice(AppModule, {
+	// 	strategy: new SQSTransport(),
+	// });
 	app.use(cookieParser());
 	app.set('trust proxy', true);
 	const port = app.get(ConfigService).get('PORT') || 3000;

@@ -10,19 +10,21 @@ services:
       - 3306:3306
     environment:
       MYSQL_ROOT_PASSWORD: 123456
+    volumes:
+      - './tmp/mysql:/var/lib/mysql'
   aws-local:
     image: localstack/localstack
     ports:
       - '4567-4583:4567-4583'
       - '8080:8080'
     environment:
-      - SERVICES=s3
+      - SERVICES=lambda,sqs
       - DEBUG=1
       - DATA_DIR=/tmp/localstack
       - PORT_WEB_UI=8080
+      - LAMBDA_EXECUTOR=local
       - DOCKER_HOST=unix:///var/run/docker.sock
-      - DEFAULT_REGION=ap-southeast-1
-      - S3_BACKEND=https://s3.ap-southeast-1.amazonaws.com
+      - DEFAULT_REGION=us-east-1
     volumes:
-      - '/tmp/localstack:/tmp/localstack'
+      - "${PWD}/tmp/localstack:/tmp/localstack"
       - '/var/run/docker.sock:/var/run/docker.sock'

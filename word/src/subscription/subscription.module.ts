@@ -1,14 +1,10 @@
 import { Module, DynamicModule, Provider } from '@nestjs/common';
 import { SubscriptionModuleOptions, SubscriptionModuleAsyncOptions, SubscriptionOptionsFactory } from './interface/subscription-options.interface';
 import { SUBSCRIPTION_MODULE_OPTIONS, SUBSCRIPTION_JOB, SUBSCRIPTION_KEY_METADATA } from './subscription.constants';
-import { MailerModule } from '@nest-modules/mailer';
-import { ConfigService } from '../core';
 import { SendEmailService } from './send-email/send-email.service';
 
 @Module({
-	imports: [
-		MailerModule.forRootAsync({ useClass: ConfigService }),
-	],
+	imports: [],
 	providers: [
 		SendEmailService,
 		{

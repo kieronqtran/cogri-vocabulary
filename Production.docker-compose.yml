@@ -14,6 +14,7 @@ services:
       - PORT=4200
     ports:
       - '4200:4200'
+
   word:
     image: kieronqtran/cogri-vocabulary-word
     build:
@@ -32,6 +33,6 @@ services:
       dockerfile: Dockerfile
       target: production
     env_file:
-      - leaner/docker.env
+      - learner/docker.env
     environment:
       - NODE_ENV=production

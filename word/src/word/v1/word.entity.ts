@@ -23,8 +23,7 @@ export class Word {
 
   @Column({
 		name: 'vietnamese_meaning',
-		type: 'varchar',
-		length: 255,
+		type: 'text',
 		charset: 'utf8',
 		nullable: true,
 	})

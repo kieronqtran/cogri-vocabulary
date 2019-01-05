@@ -1,0 +1,83 @@
+redis:
+  image: redis:4-alpine
+  ports:
+    - 6379:6379
+
+mysql:
+  image: mysql:5.7
+  ports:
+    - 3306:3306
+  environment:
+    MYSQL_ROOT_PASSWORD: 123456
+    MYSQL_DATABASE: cogri_vocabulary
+  volumes:
+    - '${PWD}/tmp/mysql:/var/lib/mysql'
+
+aws-local:
+  image: localstack/localstack
+  ports:
+    - '4567-4583:4567-4583'
+    - '8080:8080'
+  environment:
+    - SERVICES=lambda,sqs
+    - DEBUG=1
+    - DATA_DIR=/tmp/localstack
+    - PORT_WEB_UI=8080
+    - DOCKER_HOST=unix:///var/run/docker.sock
+    - DEFAULT_REGION=us-east-1
+  volumes:
+    - '${PWD}/tmp/localstack:/tmp/localstack'
+    - '/var/run/docker.sock:/var/run/docker.sock'
+
+learnerapp:
+  env_file:
+    - ./.env
+  ports:
+    - 3001:3000
+  image: kieronqtran/cogri-vocabulary-learner
+  volumes:
+    - '${PWD}/learner:/usr/src/app'
+  command: npm run start:dev
+  links:
+    - mysql
+    - redis
+    - aws-local
+
+wordapp:
+  env_file:
+    - ./.env
+  ports:
+    - 3000:3000
+  image: kieronqtran/cogri-vocabulary-word
+  volumes:
+    - '${PWD}/word:/usr/src/app'
+  command: npm run start:dev
+  links:
+    - mysql
+    - redis
+    - aws-local
+
+frontendapp:
+  env_file:
+    - ./.env
+  ports:
+    - 4200:4200
+    - 4000:4000
+  image: kieronqtran/cogri-vocabulary-fe
+  volumes:
+    - '${PWD}/client:/usr/src/app'
+  command: npm start
+
+nginxproxy:
+  env_file:
+    - ./.env
+  image: nginx
+  links:
+  - frontendapp:frontend-app
+  - learnerapp:learner-app
+  - wordapp:word-app
+  ports:
+  - 8000:80
+  volumes:
+  - ./tmp/nginx/logs/:/var/log/nginx
+  - ./proxy/conf.d:/etc/nginx/conf.d:ro

@@ -8,9 +8,15 @@
       }
     },
     {
-      "name": "api-app",
+      "name": "learner-app",
       "host": {
-        "sourcePath": "/var/app/current/api-app"
+        "sourcePath": "/var/app/current/learner-app"
+      }
+    },
+    {
+      "name": "word-app",
+      "host": {
+        "sourcePath": "/var/app/current/word-app"
       }
     },
     {
@@ -22,8 +28,14 @@
   ],
   "containerDefinitions": [
     {
-      "name": "api-app",
-      "image": "kieronqtran/cogri-vocabulary-api",
+      "name": "word-app",
+      "image": "kieronqtran/cogri-vocabulary-word",
+      "essential": true,
+      "memory": 128
+    },
+    {
+      "name": "learner-app",
+      "image": "kieronqtran/cogri-vocabulary-learner",
       "essential": true,
       "memory": 128
     },
@@ -42,11 +54,16 @@
         {
           "hostPort": 80,
           "containerPort": 80
+        },
+        {
+          "hostPort": 443,
+          "containerPort": 443
         }
       ],
       "links": [
 				"frontend-app",
-        "api-app"
+				"word-app",
+				"learner-app"
       ],
       "mountPoints": [
         {
