@@ -42,6 +42,7 @@ learnerapp:
     - mysql
     - redis
     - aws-local
+    - wordapp:word-app
 
 wordapp:
   env_file:

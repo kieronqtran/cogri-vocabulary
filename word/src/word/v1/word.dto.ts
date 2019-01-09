@@ -13,7 +13,6 @@ export class CreateWordDto {
 }
 
 export class UpdateWordDto {
-
   @IsString()
   @IsNotEmpty()
   word: string;
@@ -23,4 +22,8 @@ export class UpdateWordDto {
 	similarWords: string[];
 
 	examples: string[];
+}
+
+export class LearnedWordDTO {
+  learnedWords: string[];
 }

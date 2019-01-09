@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { WordRepository } from './word.repository';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateWordDto, UpdateWordDto } from './word.dto';
-import { Raw, IsNull, SelectQueryBuilder } from 'typeorm';
+import { CreateWordDto, LearnedWordDTO, UpdateWordDto } from './word.dto';
+import { Raw, IsNull, SelectQueryBuilder, In, Not } from 'typeorm';
 import { GetAllOptions } from './get-all-options';
 import { Word } from './word.entity';
 
@@ -12,9 +12,14 @@ export class WordService {
 		@InjectRepository(WordRepository) private readonly wordRepository: WordRepository,
 	) {}
 
-	async getARandomWord() {
-		// Can't use queryBuilder or normal find method for this get random rows
-		const query = `SELECT DISTINCT * FROM word WHERE deleted_at IS NULL ORDER BY RAND() LIMIT 10`;
+	async getRandomWord(learnedWord: LearnedWordDTO) {
+    const query = `SELECT DISTINCT
+      *
+      FROM word WHERE
+      deleted_at IS NULL AND
+      id NOT IN (${learnedWord.learnedWords.join(',')})
+      ORDER BY RAND()
+      LIMIT 10`;
 		const builder = await this.wordRepository.manager.query(query);
 		return builder.map(e => {
 			const word = new Word();
@@ -28,6 +33,20 @@ export class WordService {
 			return word;
 		});
 	}
+
+	async getSequenceWord(learnedWord: LearnedWordDTO){
+    const result = await this.wordRepository.find({
+      where: {
+        id: Not(In(learnedWord.learnedWords)),
+        deletedAt: IsNull(),
+      },
+      order: {
+        id: 'DESC',
+      },
+      take: 10,
+    });
+    return result;
+  }
 
 	async getById(id: string) {
 		return this.wordRepository.findOneOrFail(id, {

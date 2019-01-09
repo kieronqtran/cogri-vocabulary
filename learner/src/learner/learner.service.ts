@@ -6,39 +6,49 @@ import { RecordDto } from './record.dto';
 @Injectable()
 export class LearnerService {
   constructor(
-    @InjectRepository(RecordRepository) private readonly recordRepository: RecordRepository,
+    @InjectRepository(RecordRepository)
+    private readonly recordRepository: RecordRepository,
   ) {}
 
   async getAllRecords() {
     return this.recordRepository.find();
   }
 
-  async addRecord(entity : RecordDto){
-
+  async addRecord(entity: RecordDto) {
     const AWS = require('aws-sdk');
-    const sqs = new AWS.SQS({apiVersion: '2012-11-05'});
+    AWS.config.update({ region: 'us-east-1' });
+    const sqs = new AWS.SQS({ apiVersion: '2012-11-05' });
 
     const params = {
       DelaySeconds: 10,
       MessageAttributes: {
-        "Title": {
-          DataType: "String",
-          StringValue: "Add Record"
-        }
+        Title: {
+          DataType: 'String',
+          StringValue: 'Add New Record',
+        },
       },
-      MessageBody: "Create new record",
-      QueueUrl: "https://sqs.us-east-1.amazonaws.com/553559550642/testing"
+      MessageBody: 'New Record Added',
+      QueueUrl: 'https://sqs.us-east-1.amazonaws.com/553559550642/testing',
     };
 
     sqs.sendMessage(params, function(err, data) {
       if (err) {
-        console.log("Error", err);
+        console.log('Error', err);
       } else {
-        console.log("Success", data.MessageId);
+        console.log('Success', data.MessageId);
       }
     });
 
     return this.recordRepository.insert(entity);
   }
 
+  async getLearnedWords(userId: string) {
+    const result = { learnedWords: [] };
+    const query = `SELECT * FROM record WHERE learner_id = '` + userId + `'`;
+    const builder = await this.recordRepository.manager.query(query);
+    builder.map(e => {
+      return result.learnedWords.push(e.word_id);
+    });
+    return result;
+  }
 }
