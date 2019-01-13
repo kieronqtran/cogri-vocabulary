@@ -1,0 +1,22 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      <h1>{{ _data.title }}</h1>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="wrapper">
+      <a class="box"
+        *ngFor="let e of _data.choices; let i = index"
+        (click)="onClick(i)"
+        [ngClass]="{ correct: e.correct, fail: e.fail }"
+        >
+        <p>
+          <mat-icon mat-list-icon *ngIf="e.correct">check</mat-icon>
+          <mat-icon mat-list-icon *ngIf="e.fail">cancel</mat-icon>
+          {{ e.answer }}
+        </p>
+      </a>
+    </div>
+  </mat-card-content>
+</mat-card>

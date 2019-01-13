@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { MatStepperModule } from '@angular/material';
+import { MatStepperModule, MatGridListModule } from '@angular/material';
 import { StoreModule } from '@ngrx/store';
 import { LearnPageComponent } from './containers/learn-page/learn-page.component';
 import { EffectsModule } from '@ngrx/effects';
@@ -9,9 +9,13 @@ import { LearnEffects } from './effects/learn.effects';
 import { LearnRoutingModule } from './learn-routing.module';
 import { LearnService } from './services/learn.service';
 import { LearnStepperComponent } from './components/learn-stepper/learn-stepper.component';
+import { MultipleChoiceQuizComponent } from './components/multiple-choice-quiz/multiple-choice-quiz.component';
+import { DeckCardComponent } from './components/deck-card/deck-card.component';
+import { LearnCardComponent } from './components/learn-card/learn-card.component';
 
 @NgModule({
   imports: [
+    MatGridListModule,
     MatStepperModule,
     SharedModule,
     LearnRoutingModule,
@@ -19,6 +23,12 @@ import { LearnStepperComponent } from './components/learn-stepper/learn-stepper.
     EffectsModule.forFeature([LearnEffects]),
   ],
   providers: [LearnService],
-  declarations: [LearnPageComponent, LearnStepperComponent],
+  declarations: [
+    LearnPageComponent,
+    LearnStepperComponent,
+    MultipleChoiceQuizComponent,
+    DeckCardComponent,
+    LearnCardComponent
+  ],
 })
 export class LearnModule {}

@@ -1,0 +1,35 @@
+.card {
+  font-size: 28px;
+  position: fixed;
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: 49% 49%;
+  grid-gap: 10px;
+}
+
+.box {
+  background-color: #ffffff;
+  color: #000000;
+  border-radius: 5px;
+  padding: 20px;
+  font-size: 150%;
+  box-shadow: 0 3px 10px rgba(0,0,0,.23), 0 3px 10px rgba(0,0,0,.16);
+
+  &:hover {
+    background-color: rgb(96, 125, 139);
+    color: #ffffff !important;
+  }
+
+  &.correct {
+    background-color: yellowgreen !important;
+    color: #fff !important;
+  }
+
+  &.fail {
+    background-color: red !important;
+    color: #fff !important;
+
+  }
+}

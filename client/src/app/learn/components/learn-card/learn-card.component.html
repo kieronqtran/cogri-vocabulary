@@ -1,0 +1,37 @@
+<mat-horizontal-stepper [linear]="true" labelPosition="bottom" #stepper (selectionChange)="selectionChange($event)">
+  <mat-step>
+    <ng-template matStepLabel>Learn</ng-template>
+    <div class="row">
+      <div class="col d-flex justify-content-center">
+        <anms-deck-card class="word-card" [word]="data.card"></anms-deck-card>
+      </div>
+    </div>
+    <div class="row ml-5">
+      <div class="col d-flex justify-content-center">
+          <button mat-button matStepperNext>Next</button>
+      </div>
+    </div>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Quiz 1</ng-template>
+    <anms-multiple-choice-quiz class="word-card" [data]="data.quizzes[0]"></anms-multiple-choice-quiz>
+    <div class="row ml-5">
+      <div class="col">
+          <button mat-button matStepperNext>Next</button>
+      </div>
+    </div>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Quiz 2</ng-template>
+    <div class="row">
+      <div class="col d-flex justify-content-center">
+        <anms-multiple-choice-quiz class="word-card" [data]="data.quizzes[1]"></anms-multiple-choice-quiz>
+      </div>
+    </div>
+    <div class="row ml-5">
+      <div class="col d-flex justify-content-center">
+          <button mat-button>Done</button>
+      </div>
+    </div>
+  </mat-step>
+</mat-horizontal-stepper>

@@ -68,10 +68,13 @@ export class LearnerService {
 
   async getLearnedWords(userId: string) {
     const result = { learnedWords: [] };
-    const query = `SELECT * FROM record WHERE learner_id = '` + userId + `'`;
-    const builder = await this.recordRepository.manager.query(query);
+    const builder = await this.recordRepository.find({
+      where: {
+        learnerId: userId,
+      },
+    });
     builder.map(e => {
-      return result.learnedWords.push(e.word_id);
+      return result.learnedWords.push(e.wordId);
     });
     return result;
   }

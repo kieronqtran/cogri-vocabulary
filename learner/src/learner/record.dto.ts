@@ -15,5 +15,3 @@ export class RecordDto {
   totalTime: number;
   isCorrect: boolean;
 }
-
-
