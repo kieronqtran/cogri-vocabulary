@@ -20,6 +20,12 @@
       }
     },
     {
+      "name": "worker-app",
+      "host": {
+        "sourcePath": "/var/app/current/worker-app"
+      }
+    },
+    {
       "name": "nginx-proxy-conf",
       "host": {
         "sourcePath": "/var/app/current/proxy/conf.d"
@@ -36,6 +42,12 @@
     {
       "name": "learner-app",
       "image": "kieronqtran/cogri-vocabulary-learner",
+      "essential": true,
+      "memory": 128
+    },
+    {
+      "name": "worker-app",
+      "image": "kieronqtran/cogri-vocabulary-worker",
       "essential": true,
       "memory": 128
     },

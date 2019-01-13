@@ -60,4 +60,8 @@ export class Word {
 		select: false,
 	})
 	deletedAt?: Date;
+
+	constructor(object: Word) {
+	  Object.assign(this, object);
+  }
 }

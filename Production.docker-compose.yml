@@ -36,3 +36,14 @@ services:
       - learner/docker.env
     environment:
       - NODE_ENV=production
+
+  worker:
+    image: kieronqtran/cogri-vocabulary-worker
+    build:
+      context: worker
+      dockerfile: Dockerfile
+      target: production
+    env_file:
+      - worker/docker.env
+    environment:
+      - NODE_ENV=production

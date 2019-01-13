@@ -25,6 +25,8 @@ export = async (job: Job<SendEmailSubscriptionData>) => {
 		logger.log(`Send email to ${to} successful`);
 	}
 	catch (error) {
+	  console.error(error);
 		logger.error('Send email failed', error);
+		return Promise.reject(error);
 	}
 };

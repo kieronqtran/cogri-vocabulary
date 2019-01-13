@@ -1,0 +1,3 @@
+export const SUBSCRIPTION_MODULE_OPTIONS = 'SUBSCRIPTION_MODULE_OPTIONS';
+export const SUBSCRIPTION_KEY_METADATA = 'subscription_module:email';
+export const SUBSCRIPTION_JOB = 'SUBSCRIPTION_JOB';

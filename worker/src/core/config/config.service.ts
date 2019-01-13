@@ -8,9 +8,7 @@ import {
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
-import { AuthOptionsFactory, IAuthModuleOptions } from '@nestjs/passport';
 import { createTransport } from 'nodemailer';
-import * as redisStore from 'cache-manager-redis-store';
 import { Credentials } from 'aws-sdk';
 import { SubscriptionOptionsFactory, SubscriptionModuleOptions } from '../../subscription/interface/subscription-options.interface';
 
@@ -19,8 +17,6 @@ export interface EnvConfig {
 }
 
 export class ConfigService implements
-	AuthOptionsFactory,
-	CacheOptionsFactory,
 	TypeOrmOptionsFactory,
 	SubscriptionOptionsFactory,
 	HttpModuleOptionsFactory {
@@ -59,10 +55,6 @@ export class ConfigService implements
     };
   }
 
-  createAuthOptions(): IAuthModuleOptions<any> {
-    return { defaultStrategy: 'jwt', session: false };
-  }
-
 	createSubscriptionOptions(): SubscriptionModuleOptions {
 		const credentials = new Credentials({
 			accessKeyId: this.get('AWS_ACCESS_KEY'),
@@ -96,16 +88,6 @@ export class ConfigService implements
 			defaultCron: this.get('APP_SEND_EMAIL_CRON'),
 			queueKey: 'query_email',
 			tz: this.get('tz') || 'Etc/UTC',
-		};
-	}
-
-	createCacheOptions(): Promise<CacheModuleOptions> | CacheModuleOptions {
-		return {
-			store: redisStore,
-			host: this.get('REDIS_HOST'),
-			port: parseInt(this.get('REDIS_PORT'), 10),
-			ttl: 5,
-			max: 10,
 		};
 	}
 

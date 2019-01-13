@@ -1,4 +1,4 @@
-import { Injectable, Inject, OnModuleInit } from '@nestjs/common';
+import { Injectable, Inject, OnModuleInit, HttpService } from '@nestjs/common';
 import * as Bull from 'bull';
 import { Queue } from 'bull';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
@@ -19,7 +19,10 @@ export class SendEmailService implements OnModuleInit {
 	constructor(
 		@Inject(SUBSCRIPTION_MODULE_OPTIONS) private readonly config: SubscriptionModuleOptions,
 		@Inject(SUBSCRIPTION_JOB) private readonly queueName: string,
-	) { }
+    private readonly httpService: HttpService
+	) {
+	  console.log(queueName);
+  }
 
 	async onModuleInit() {
 		await this.startJob();
@@ -28,22 +31,43 @@ export class SendEmailService implements OnModuleInit {
 	async startJob() {
 		const { defaultCron, processes = 1, tz = 'Etc/UTC' } = this.config;
 
-		this.sendEmailQueue.process(processes, sendEmailJob);
+		this.sendEmailQueue.process(sendEmailJob);
 		const self = this;
 
 		this.cornQueue.process(async (job: Bull.Job<{ email: string; name: string }[]>) => {
 
 		  const emailLists = await this.getUsers();
 
-		  emailLists.forEach(({email, name}) => {
+		  const promises = emailLists.map(async ({email, name}) => {
 				self.logger.log(`Create a job to send email to ${email}`);
+
+        const prediction = await this.machineLearning(email);
+        this.logger.log(JSON.stringify(prediction, null, 2));
+
+        var point = parseFloat(prediction["Prediction"]["predictedValue"]);
+        var mark = Math.round(point);
+
+        if (mark >= 50){
+          mark = 48;
+        }
+        else if (mark < 25){
+          mark = Math.round(mark * 1.5);
+        }
+        else if (mark < 10){
+          mark = mark * 3;
+        }
+        else {
+          mark = mark;
+        }
+
+        const encouragement = "If you continue with your current learning progress, next week, you will get " + mark + " over 50 points.";
 
 				const subject = `[Cogri Vocabulary] Hello ${name}!`;
 				const context = {};
 
-				self.sendEmailQueue.add({
+				await self.sendEmailQueue.add({
 					context,
-					template,
+					template: encouragement,
 					to: email,
 					subject,
 				}, {
@@ -51,27 +75,56 @@ export class SendEmailService implements OnModuleInit {
 					attempts: 5,
 				});
 			});
-
+      await Promise.all(promises);
 		});
 
 		// Make sure there is only 1 cron job
 		const counted = await this.cornQueue.getRepeatableJobs();
 		const job = counted.pop();
-
-		this.logger.log(`${job.name} sending email job is running`);
-
+    let newJob;
 		if (!job) {
-			this.cornQueue.add(null, { repeat: { cron: defaultCron , tz }});
+			newJob = this.cornQueue.add(null, {
+			  repeat: {
+			    cron: defaultCron ,
+          tz
+			  },
+        removeOnComplete: true,
+			}).catch(err => console.log(err));
 		}
-		if (job.cron !== defaultCron) {
+		if (job && job.cron !== defaultCron) {
 			await this.cornQueue.removeRepeatable({
 				jobId: job.id,
 				cron: job.cron,
 				tz: job.tz,
 			});
-			this.cornQueue.add(null, { repeat: { cron: defaultCron , tz }});
+			this.cornQueue.add(null, {
+			  repeat: {
+			    cron: defaultCron ,
+          tz
+			  },
+        removeOnComplete: true,
+			}).catch(err => console.log(err));
 		}
-	}
+
+    this.cornQueue.on('error', (error) => {
+      console.error(error);
+    })
+
+    this.sendEmailQueue.on('error', (error) => {
+      console.error(error);
+    })
+
+    this.logger.log(`${JSON.stringify(job)} sending email job is running`);
+
+  }
+
+	async machineLearning(email: string){
+	  const param = {"email" : email};
+    const response = await this.httpService
+      .post('https://jt7rncob6h.execute-api.us-east-1.amazonaws.com/TestingPost', param)
+      .toPromise();
+    return response.data;
+  }
 
 	async getUsers() {
 		const { aws: { region, userPoolId, credentials } } = this.config;

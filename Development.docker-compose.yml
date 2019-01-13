@@ -29,6 +29,18 @@ aws-local:
     - '${PWD}/tmp/localstack:/tmp/localstack'
     - '/var/run/docker.sock:/var/run/docker.sock'
 
+workerapp:
+  env_file:
+    - ./.env
+  image: kieronqtran/cogri-vocabulary-worker
+  volumes:
+    - '${PWD}/worker:/usr/src/app'
+  command: npm run start:dev
+  links:
+    - mysql
+    - redis
+    - aws-local
+
 learnerapp:
   env_file:
     - ./.env
