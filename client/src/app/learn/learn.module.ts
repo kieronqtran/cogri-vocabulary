@@ -12,6 +12,7 @@ import { LearnStepperComponent } from './components/learn-stepper/learn-stepper.
 import { MultipleChoiceQuizComponent } from './components/multiple-choice-quiz/multiple-choice-quiz.component';
 import { DeckCardComponent } from './components/deck-card/deck-card.component';
 import { LearnCardComponent } from './components/learn-card/learn-card.component';
+import { ModePageComponent } from './containers/mode-page/mode-page.component';
 
 @NgModule({
   imports: [
@@ -28,7 +29,8 @@ import { LearnCardComponent } from './components/learn-card/learn-card.component
     LearnStepperComponent,
     MultipleChoiceQuizComponent,
     DeckCardComponent,
-    LearnCardComponent
+    LearnCardComponent,
+    ModePageComponent,
   ],
 })
 export class LearnModule {}

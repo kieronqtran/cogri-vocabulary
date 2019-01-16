@@ -51,3 +51,6 @@
   @include angular-material-theme($anms-nature-theme);
   @include custom-components-theme($anms-nature-theme);
 }
+.mat-horizontal-stepper-header {
+  pointer-events: none;
+}

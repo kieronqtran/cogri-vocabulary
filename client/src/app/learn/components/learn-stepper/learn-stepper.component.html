@@ -1,23 +1,23 @@
 <div class="container">
-	<div class="row">
-		<div class="col">
-			<mat-horizontal-stepper [linear]="true" labelPosition="bottom" #stepper (selectionChange)="selectionChange($event)">
-					<mat-step *ngFor="let word of quizzes; let i = index">
-            <ng-template matStepLabel>{{ i+1 }}</ng-template>
-            <div class="row">
-              <div class="col d-flex justify-content-center">
-                <anms-learn-card class="word-card" [data]="word"></anms-learn-card>
-              </div>
+  <div class="row">
+    <div class="col">
+      <mat-horizontal-stepper [linear]="true" labelPosition="bottom" #stepper (selectionChange)="selectionChange($event)">
+        <mat-step *ngFor="let word of quizzes; let i = index">
+          <ng-template matStepLabel>{{ i+1 }}</ng-template>
+          <div class="row">
+            <div class="col d-flex justify-content-center">
+              <anms-learn-card class="word-card" [data]="word" [stepper]=stepper [current]=i [leng]=quizzes.length></anms-learn-card>
             </div>
-            <div class="row ml-5">
-              <div class="col d-flex justify-content-center">
-                  <button *ngIf="i > 0" mat-button matStepperPrevious>Back</button>
-                  <button *ngIf="i < quizzes.length - 1" mat-button matStepperNext>Next</button>
-                  <button *ngIf="i === quizzes.length - 1" mat-button (click)="onClickDone()">Done</button>
-              </div>
+          </div>
+          <div class="row ml-5">
+            <div class="col d-flex justify-content-center">
+              <!--<button *ngIf="i > 0" mat-button matStepperPrevious>Back</button>-->
+              <!--<button *ngIf="i < quizzes.length - 1" mat-button matStepperNext>Next</button>-->
+              <!--<button *ngIf="i === quizzes.length - 1" mat-button (click)="onClickDone()">Done</button>-->
             </div>
-					</mat-step>
-				</mat-horizontal-stepper>
-		</div>
-	</div>
+          </div>
+        </mat-step>
+      </mat-horizontal-stepper>
+    </div>
+  </div>
 </div>
