@@ -4,6 +4,9 @@ import * as fromStore from '../../reducers';
 import { Observable, of } from 'rxjs';
 import { Word } from '@app/admin/word/models/word';
 import { LoadLearnApis } from '@app/learn/actions/learn-api.actions';
+import { Learn } from '@app/learn/models/learn.model';
+import { Router } from '@angular/router';
+import { RecordWord } from '@app/learn/actions/learn.actions';
 
 @Component({
   selector: 'anms-learn-page',
@@ -13,18 +16,22 @@ import { LoadLearnApis } from '@app/learn/actions/learn-api.actions';
 export class LearnPageComponent implements OnInit {
   words$: Observable<Word[]>;
 
-  constructor(private store: Store<fromStore.State>) {}
+  constructor(
+    private store: Store<fromStore.State>,
+    private router: Router,
+  ) {}
 
   ngOnInit() {
     this.store.dispatch(new LoadLearnApis());
-    this.words$ = this.store.pipe(select(fromStore.selectRandomWordAll));
+    this.words$ = this.store.pipe(select(fromStore.selectAllLearningWords));
   }
 
-  onSelectionChange(event: Word) {
-    console.log(event);
+  onSelectionChange(record) {
+    console.log(record);
+    this.store.dispatch(new RecordWord(record));
   }
 
   onClickDone() {
-    console.log('Done clicked');
+    this.router.navigateByUrl('/learn');
   }
 }

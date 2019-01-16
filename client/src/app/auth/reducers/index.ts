@@ -33,18 +33,18 @@ export const selectAuthStatusState = createSelector(
   selectAuthState,
   (state: AuthState) => state.status,
 );
-export const getUser = createSelector(
+export const selectUser = createSelector(
   selectAuthStatusState,
   fromAuth.getUser,
 );
 
 export const selectIsAuthenticated = createSelector(
-  getUser,
+  selectUser,
   user => !!user,
 );
 
 export const selectIsAdmin = createSelector(
-  getUser,
+  selectUser,
   user => !!user && user['cognito:groups'].some(e => e === 'Admin'),
 );
 

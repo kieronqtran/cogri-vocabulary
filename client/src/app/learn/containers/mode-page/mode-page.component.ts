@@ -12,12 +12,15 @@ export class ModePageComponent implements OnInit {
   ngOnInit() {}
 
   onSequenceMode() {
+    const startTime = new Date();
+
     this.router.navigate(['/learn/quiz'], {
       queryParams: { mode: 'sequence' },
     });
   }
 
   onRandomMode() {
+    const startTime = new Date();
     this.router.navigate(['/learn/quiz'], {
       queryParams: { mode: 'random' },
     });

@@ -19,10 +19,10 @@ export class WordService {
       deleted_at IS NULL AND
       id NOT IN (${learnedWord.learnedWords.join(',')})
       ORDER BY RAND()
-      LIMIT 10`;
+      LIMIT 5`;
 		const builder = await this.wordRepository.manager.query(query);
 		return builder.map(e => {
-			const word = new Word();
+			const word = new Word(e);
 			word.id = e.id;
 			word.word = e.word;
 			word.vietnameseMeaning = e.vietnamese_meaning;
@@ -43,7 +43,7 @@ export class WordService {
       order: {
         id: 'DESC',
       },
-      take: 10,
+      take: 5,
     });
     return result;
   }

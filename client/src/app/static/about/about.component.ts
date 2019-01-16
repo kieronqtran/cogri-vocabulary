@@ -4,7 +4,7 @@ import { ROUTE_ANIMATIONS_ELEMENTS, AppState } from '@app/core';
 import { Store, select } from '@ngrx/store';
 import { AuthApiActions } from '@app/auth/actions';
 import { Observable } from 'rxjs';
-import { selectIsAuthenticated, getUser } from '@app/auth/reducers';
+import { selectIsAuthenticated, selectUser } from '@app/auth/reducers';
 import { User } from '@app/auth/models/user';
 
 @Component({
@@ -21,7 +21,7 @@ export class AboutComponent implements OnInit {
     select(selectIsAuthenticated),
   );
 
-  user$: Observable<User> = this.store.pipe(select(getUser));
+  user$: Observable<User> = this.store.pipe(select(selectUser));
 
   constructor(private readonly store: Store<AppState>) {}
 

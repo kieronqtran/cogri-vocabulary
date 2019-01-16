@@ -14,6 +14,7 @@ export enum LearnActionTypes {
   DeleteLearn = '[Learn] Delete Learn',
   DeleteLearns = '[Learn] Delete Learns',
   ClearLearns = '[Learn] Clear Learns',
+  RecordWord = '[Learn] Record Word'
 }
 
 export class LoadLearns implements Action {
@@ -72,6 +73,16 @@ export class DeleteLearns implements Action {
 
 export class ClearLearns implements Action {
   readonly type = LearnActionTypes.ClearLearns;
+}
+
+export class RecordWord implements Action {
+  readonly type = LearnActionTypes.RecordWord;
+  constructor(public payload: { record: {
+    wordId: string,
+    timeStart: Date,
+    timeEnd: Date,
+    totalTime: number,
+  } }) { }
 }
 
 export type LearnActions =

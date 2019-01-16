@@ -11,6 +11,7 @@ import { environment } from '@env/environment';
 import { initStateFromLocalStorage } from './meta-reducers/init-state-from-local-storage.reducer';
 import { debug } from './meta-reducers/debug.reducer';
 import { RouterStateUrl } from './router/router.state';
+import { AuthState } from '@app/auth/reducers';
 
 export const reducers: ActionReducerMap<AppState> = {
   router: routerReducer,
