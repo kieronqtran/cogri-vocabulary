@@ -37,19 +37,22 @@
       "name": "word-app",
       "image": "kieronqtran/cogri-vocabulary-word",
       "essential": true,
-      "memory": 128
+      "memory": 1024
     },
     {
       "name": "learner-app",
       "image": "kieronqtran/cogri-vocabulary-learner",
       "essential": true,
-      "memory": 128
+      "memory": 1024,
+      "links": [
+        "word-app"
+      ]
     },
     {
       "name": "worker-app",
       "image": "kieronqtran/cogri-vocabulary-worker",
       "essential": true,
-      "memory": 128
+      "memory": 512
     },
     {
       "name": "frontend-app",

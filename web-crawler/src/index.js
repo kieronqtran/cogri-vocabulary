@@ -9,162 +9,199 @@ exports.handler = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
   const browser = await setup.getBrowser();
   try {
-    const result = await exports.run(browser);
+    console.log('context', context);
+    console.log('event', event);
+    const result = await exports.run(browser, event);
     return result;
   } catch (e) {
     throw e;
   }
 };
 
-exports.run = async (browser) => {
+exports.run = async (browser, context) => {
   let pageOne;
   try {
-  const word = 'car';
+    // const word = context.word;
+    const word = "microsoft";
 
-  // PAGE 1
-  pageOne = await browser.newPage();
-  await pageOne.goto('https://dictionary.cambridge.org/dictionary/english-vietnamese',
-   {waitUntil: ['domcontentloaded']}
-  );
+    // PAGE 1
+    pageOne = await browser.newPage();
+    await pageOne.goto('https://dictionary.cambridge.org/dictionary/english-vietnamese',
+      {waitUntil: ['domcontentloaded']}
+    );
 
-  console.log((await pageOne.content()).slice(0, 500));
+    await pageOne.type('#cdo-search-input', word);
 
-  await pageOne.type('#cdo-search-input', word);
-  // avoid to timeout waitForNavigation() after click()
-
-
-  // await pageOne.click('.cdo-search__button');
+    // await pageOne.click('.cdo-search__button');
     await pageOne.keyboard.press('Enter');
-  // await pageOne.evaluate(() => {
-  //   // this code works fine as well.
-  //   const element = document.querySelector('.cdo-search__button');
-  //   console.log(element);
-  //   // I can click on the button with the following line.
-  //   element.click();
-  //   return true;
-  // });
-  await Promise.all([
-    // avoid to
-    // 'Cannot find context with specified id undefined' for localStorage
-    pageOne.waitForNavigation(),
-  ]);
+    // await pageOne.evaluate(() => {
+    //   // this code works fine as well.
+    //   const element = document.querySelector('.cdo-search__button');
+    //   console.log(element);
+    //   // I can click on the button with the following line.
+    //   element.click();
+    //   return true;
+    // });
+    await Promise.all([
+      pageOne.waitForNavigation(),
+    ]);
 
-  // await pageOne.screenshot({path: '/tmp/screenshot.png'});
-  await pageOne.waitFor('span.trans');
-  const elementsOne = await pageOne.$$('span.def-body');
+    await pageOne.waitFor('span.trans')
+      .catch(err => {});
+    const elementsOne = await pageOne.$$('span.def-body')
+      .catch(err => {});
 
-  let samples = [];
+    let samples = [];
+    let vietnameseMeaning = '';
 
-  const firstElementOne = elementsOne[0];
-  const transOne = await firstElementOne
-    .$eval('span.trans', (element) => element.innerHTML);
-  const rawExampleOne = await firstElementOne
-    .$eval('div.examp.emphasized > span.eg', (element) => element.innerHTML);
-  const vietnameseMeaning = transOne.trim();
-  const sampleSentenceOne = rawExampleOne.replace(/<\/?[^>]+(>|$)/g, '');
-  samples.push(sampleSentenceOne);
+    if (elementsOne != null){
+      if (elementsOne[0] != null){
+        const firstElementOne = elementsOne[0];
 
-  if (elementsOne[1]) {
-    const secondElementOne = elementsOne[1];
-    const rawExampleTwo = await secondElementOne
-      .$eval('div.examp.emphasized > span.eg', (element) => element.innerHTML);
-    const sampleSentenceTwo = rawExampleTwo.replace(/<\/?[^>]+(>|$)/g, '');
-    samples.push(sampleSentenceTwo);
-  }
+        const transOne = await firstElementOne
+          .$eval('span.trans', (element) => element.innerHTML)
+          .catch(err => console.log(err));
 
-  console.log(firstElementOne);
-  // debugger;
-  // const document = element[0];
-  // const data = document.innerHTML.trim();
-/* screenshot
-  await page.screenshot({path: '/tmp/screenshot.png'});
-  const aws = require('aws-sdk');
-  const s3 = new aws.S3({apiVersion: '2006-03-01'});
-  const fs = require('fs');
-  const screenshot = await new Promise((resolve, reject) => {
-    fs.readFile('/tmp/screenshot.png', (err, data) => {
-      if (err) return reject(err);
-      resolve(data);
-    });
-  });
-  await s3.putObject({
-    Bucket: '<bucket name>',
-    Key: 'screenshot.png',
-    Body: screenshot,
-  }).promise();
-*/
+        if (transOne != null){
+          vietnameseMeaning = transOne.trim();
+        }
 
-  // cookie and localStorage
-  // await page.setCookie({name: 'name', value: 'cookieValue'});
-  // console.log(await page.cookies());
-  // console.log(await page.evaluate(() => {
-  //   localStorage.setItem('name', 'localStorageValue');
-  //   return localStorage.getItem('name');
-  // }));
-  // console.log(data);
-  // await pageOne.close();
+        const rawExampleOne = await firstElementOne
+          .$eval('div.examp.emphasized > span.eg',
+            (element) => element.innerHTML)
+          .catch(err => console.log(err));
 
-  // PAGE 2
-  const pageTwo = await browser.newPage();
-  await pageTwo.goto('http://www.synonym-finder.com',
-    {waitUntil: ['domcontentloaded']}
-  );
-  console.log((await pageTwo.content()).slice(0, 500));
+        let sampleSentenceOne = '';
+        if (rawExampleOne != null){
+          sampleSentenceOne = rawExampleOne.replace(/<\/?[^>]+(>|$)/g, '');
+          samples.push(sampleSentenceOne);
+        }
+      }
 
-  await pageTwo.type('#edit-name', word);
-  // avoid to timeout waitForNavigation() after click()
+      if (elementsOne[1] != null){
+        const secondElementOne = elementsOne[1];
+
+        const rawExampleTwo = await secondElementOne
+          .$eval('div.examp.emphasized > span.eg',
+            (element) => element.innerHTML)
+          .catch(err => console.log(err));
+
+        let sampleSentenceTwo = '';
+        if (rawExampleTwo != null){
+          sampleSentenceTwo = rawExampleTwo
+            .replace(/<\/?[^>]+(>|$)/g, '');
+          samples.push(sampleSentenceTwo);
+        }
+      }
+    }
+
+
+    // console.log(firstElementOne);
+    // debugger;
+    // const document = element[0];
+    // const data = document.innerHTML.trim();
+    /* screenshot
+      await page.screenshot({path: '/tmp/screenshot.png'});
+      const aws = require('aws-sdk');
+      const s3 = new aws.S3({apiVersion: '2006-03-01'});
+      const fs = require('fs');
+      const screenshot = await new Promise((resolve, reject) => {
+        fs.readFile('/tmp/screenshot.png', (err, data) => {
+          if (err) return reject(err);
+          resolve(data);
+        });
+      });
+      await s3.putObject({
+        Bucket: '<bucket name>',
+        Key: 'screenshot.png',
+        Body: screenshot,
+      }).promise();
+    */
+
+    // cookie and localStorage
+    // await page.setCookie({name: 'name', value: 'cookieValue'});
+    // console.log(await page.cookies());
+    // console.log(await page.evaluate(() => {
+    //   localStorage.setItem('name', 'localStorageValue');
+    //   return localStorage.getItem('name');
+    // }));
+    // console.log(data);
+    // await pageOne.close();
+
+    // PAGE 2
+    const pageTwo = await browser.newPage();
+    await pageTwo.goto('http://www.synonym-finder.com',
+      {waitUntil: ['domcontentloaded']}
+    );
+
+    await pageTwo.type('#edit-name', word);
     await pageTwo.keyboard.press('Enter');
-  await Promise.all([
-    // avoid to
-    // 'Cannot find context with specified id undefined' for localStorage
-    pageTwo.waitForNavigation(),
-    // pageTwo.click('#edit-submit'),
-  ]);
+    await Promise.all([
+      pageTwo.waitForNavigation(),
+    ]);
 
-  // await pageTwo.screenshot({path: '/tmp/screenshot.png'});
-  await pageTwo.waitFor('span.hypernym-lemmas');
-  const elementsTwo = await pageTwo.$$('span.hypernym-lemmas');
-  const firstElementTwo = elementsTwo[0];
+    let similar = [];
 
-  let similar = [];
+    // await pageTwo.screenshot({path: '/tmp/screenshot.png'});
+    const found = await pageTwo.waitFor('span.hypernym-lemmas')
+      .catch(error => {});
 
-  const synonym = await firstElementTwo
-    .$eval('a', (element) => element.innerHTML);
+    if (found != null){
+      const elementsTwo = await pageTwo.$$('span.hypernym-lemmas')
+        .catch(error => {});
 
-  similar.push(synonym);
+      if (elementsTwo != null){
+        const firstElementTwo = elementsTwo[0];
+        const synonym = await firstElementTwo
+          .$eval('a', (element) => element.innerHTML)
+          .catch(error => {});
 
-  // await pageTwo.close();
+        if (synonym != null){
+          similar.push(synonym);
+        }
 
-  const result = {
-    'word': word,
-    'vietnameseMeaning': vietnameseMeaning,
-    'similarWords': similar,
-    'examples': samples,
-  };
+      }
 
-  const str = JSON.stringify(result);
-  console.log(str);
+    }
 
-  const params = {
-    DelaySeconds: 0,
-    MessageAttributes: {
-      'Title': {
-        DataType: 'String',
-        StringValue: 'Add New Word',
+    // await pageTwo.close();
+
+    const result = {
+      'word': word,
+      'vietnameseMeaning': vietnameseMeaning,
+      'similarWords': similar,
+      'examples': samples,
+    };
+
+    const str = JSON.stringify(result);
+    console.log(str);
+
+    const params = {
+      DelaySeconds: 0,
+      MessageAttributes: {
+        'Title': {
+          DataType: 'String',
+          StringValue: 'Add New Word',
+        },
+        'Value': {
+          DataType: 'String',
+          StringValue: ${str},
+        },
       },
-      'Value': {
-        DataType: 'String',
-        StringValue: `${str}`,
-      },
-    },
-    MessageDeduplicationId: word,
-    MessageGroupId: 'Crawling',
-    MessageBody: 'New Word Added',
-    QueueUrl: 'https://sqs.us-east-1.amazonaws.com/553559550642/insert-word.fifo',
-  };
+      MessageDeduplicationId: word,
+      MessageGroupId: 'Crawling',
+      MessageBody: 'New Word Added',
+      QueueUrl: 'https://sqs.us-east-1.amazonaws.com/553559550642/insert-word.fifo',
+    };
 
-  const response = await sqs.sendMessage(params).promise();
-  return response;
+    if (vietnameseMeaning != ''){
+      const response = await sqs.sendMessage(params).promise();
+      return response;
+    }
+    else {
+      return 'Cannot find word';
+    }
+
   } catch (e) {
     console.error(e);
 
@@ -190,14 +227,14 @@ exports.run = async (browser) => {
       Bucket: 'cloud-computing-asm3/error',
       Key: 'screenshot.png',
       Body: screenshot,
-      ContentType: 'image/png'
+      ContentType: 'image/png',
     }).promise();
 
     await s3.putObject({
       Bucket: 'cloud-computing-asm3/error',
       Key: 'dump.html',
       Body: dumpHtml,
-      ContentType: 'text/html charset=utf-8'
+      ContentType: 'text/html charset=utf-8',
     }).promise();
 
     throw e;

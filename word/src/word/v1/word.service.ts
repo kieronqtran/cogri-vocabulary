@@ -16,8 +16,8 @@ export class WordService {
     const query = `SELECT DISTINCT
       *
       FROM word WHERE
-      deleted_at IS NULL AND
-      id NOT IN (${learnedWord.learnedWords.join(',')})
+      deleted_at IS NULL
+      ${learnedWord.learnedWords ? ` AND id NOT IN (learnedWord.learnedWords.join(',')` : ''}
       ORDER BY RAND()
       LIMIT 5`;
 		const builder = await this.wordRepository.manager.query(query);

@@ -21,7 +21,7 @@ export class RobotService {
 
   constructor(
     @InjectRepository(WordRepository) private readonly wordRepository: WordRepository,
-    private readonly wordService: WordService
+    private readonly wordService: WordService,
   ) {}
 
   async onModuleInit() {
@@ -32,43 +32,42 @@ export class RobotService {
     try {
       const params = {
         AttributeNames: [
-          "SentTimestamp"
+          'SentTimestamp',
         ],
         MaxNumberOfMessages: 10,
         MessageAttributeNames: [
-          "All"
+          'All',
         ],
-        QueueUrl: "https://sqs.us-east-1.amazonaws.com/553559550642/insert-word.fifo",
+        QueueUrl: 'https://sqs.us-east-1.amazonaws.com/553559550642/insert-word.fifo',
         VisibilityTimeout: 20,
-        WaitTimeSeconds: 0
+        WaitTimeSeconds: 0,
       };
 
       setInterval(() => {
         this.sqs.receiveMessage(params,  (err, messageList) => {
-          if(err) {
+          if (err) {
             console.error(err);
           }
           console.log(messageList);
-          if(messageList.Messages) {
-            messageList.Messages.forEach((message) =>{
-            const word = JSON.parse(message.MessageAttributes['Value'].StringValue);
+          if (messageList.Messages) {
+            messageList.Messages.forEach((message) => {
+            const word = JSON.parse(message.MessageAttributes.Value.StringValue);
             const wordEntity = new Word(word);
-            const query = `INSERT INTO \`word\`(\`id\`, \`word\`, \`vietnamese_meaning\`, \`similar_words\`, \`examples\`, \`created_at\`, \`updated_at\`, \`deleted_at\`) VALUES (DEFAULT, '${wordEntity.word}', '${wordEntity.vietnameseMeaning}', '${JSON.stringify(wordEntity.similarWords)}', '${JSON.stringify(wordEntity.examples)}', DEFAULT, DEFAULT, DEFAULT) ON DUPLICATE KEY UPDATE examples = '${JSON.stringify(wordEntity.examples)}', vietnamese_meaning = '${wordEntity.vietnameseMeaning}', similar_words = '${JSON.stringify(wordEntity.similarWords)}'`;
-            this.wordRepository.manager.query(query).then(_ => {
+            this.wordRepository.insert(wordEntity).then(_ => {
               const deleteParams = {
-                QueueUrl: "https://sqs.us-east-1.amazonaws.com/553559550642/insert-word.fifo",
-                ReceiptHandle: message.ReceiptHandle
+                QueueUrl: 'https://sqs.us-east-1.amazonaws.com/553559550642/insert-word.fifo',
+                ReceiptHandle: message.ReceiptHandle,
               };
 
               this.sqs.deleteMessage(deleteParams, function(err, data) {
                 if (err) {
-                  console.log("Delete Error", err);
+                  console.log('Delete Error', err);
                 } else {
-                  console.log("Message Deleted", data);
+                  console.log('Message Deleted', data);
                 }
               });
             });
-          })
+          });
           } else {
             this.logger.log('There is no message in queue');
           }
