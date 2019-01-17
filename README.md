@@ -16,23 +16,29 @@ The user management is using fully Cognito with using the custom domain https://
 + The word CRUD could accessed on page [Word CURD](https://cogri-vocabulary.tranhuuquang.me/admin/word). Only Admin can accessed to this group.
 + This service also listens to a queue provided by AWS SQS. Whenever it detects a message in this queue, it is going to receive that message and extract the information from this message, based on which, a new word is added into the database (the content of each message is mentioned in the Web Crawler below). 
 
+
 - *Web Crawler:*
 + This web crawler receives a text list of words and automatically go to the following 3 websites to get data for each word. 
 https://dictionary.cambridge.org/dictionary/english-vietnamese
 http://www.synonym-finder.com
 https://translate.google.com
 + The result is then pushed to the AWS SQS queue mentioned above (in the Word Service) to be added into the database.
++ This is a Lambda function.
 + Currently, the database has around 10 thousand words.
+
 
 - *Learn Service:* 
 + Users can go to [Learn Page](https://cogri-vocabulary.tranhuuquang.me/learn) for Learning words.
 + Users can choose between 2 learning options: Random and Sequence. For Random, 5 random words that users have NOT learned will be fetched from the database. For Sequence, the words are fetched alphabetically. The words are fetched by calling a GET request to the Word Service.
 + For every word, users have to complete 2 quizzes before getting to the next one. When users answer the quizzes correctly, a new record of their learning is added into the database. This includes their learning time and also the time it took them to do the quiz.
 
+
 - *Worker Service:*
 + This service is application of AWS Machine Learning into creating an Email Service.
 + Every week, users will receive an encouraging email predicting the number of new words that they are capable of learning in the following week.
 + The data used for training the machine learning model is based on users' learning records (mentioned in the Learn Service above). 
++ The function creating predictions is a Lambda function.
+
 
 - *Client Service (the Front-end):*
 + The front-end was built using Angular and Redux.
@@ -50,10 +56,11 @@ All the services that has been used:
  - AWS Route 53
  - AWS Simple Queue Service
  - AWS Lambda
+ - AWS Machine Learning
  - Headless chromium
  - Docker Hub
  - Github
- - <Coffee at Kai Coffeeshop>
+ - *Coffee at Kai Coffeeshop*
  
 
 ## Accounts:
