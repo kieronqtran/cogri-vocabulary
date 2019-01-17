@@ -66,7 +66,7 @@ var
   Queue = require('bull'),
   cluster = require('cluster');
 
-var numWorkers = 8;
+var numWorkers = 20;
 var queue = new Queue("test concurrent queue", { });
 
 const url = 'https://jt7rncob6h.execute-api.us-east-1.amazonaws.com/2ndDeploy/crawler';
@@ -86,7 +86,7 @@ queue.process( async function(job){
 
 if(cluster.isMaster){
 
-  const wordListtxt = fs.readFileSync('word-list.txt', { encoding: 'utf8'});
+  const wordListtxt = fs.readFileSync('part3.txt', { encoding: 'utf8'});
   const wordList = wordListtxt.split('\n');
   // console.log('word list length: ', wordList);
 

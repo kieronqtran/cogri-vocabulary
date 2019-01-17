@@ -17,12 +17,13 @@ export class WordService {
       *
       FROM word WHERE
       deleted_at IS NULL
-      ${learnedWord.learnedWords ? ` AND id NOT IN (learnedWord.learnedWords.join(',')` : ''}
+      ${learnedWord.learnedWords && learnedWord.learnedWords.length > 0 ? ` AND id NOT IN (${learnedWord.learnedWords.join(',')})` : ''}
       ORDER BY RAND()
       LIMIT 5`;
+
 		const builder = await this.wordRepository.manager.query(query);
 		return builder.map(e => {
-			const word = new Word(e);
+			const word = new Word();
 			word.id = e.id;
 			word.word = e.word;
 			word.vietnameseMeaning = e.vietnamese_meaning;
@@ -37,7 +38,7 @@ export class WordService {
 	async getSequenceWord(learnedWord: LearnedWordDTO){
     const result = await this.wordRepository.find({
       where: {
-        id: Not(In(learnedWord.learnedWords)),
+        id: learnedWord.learnedWords && learnedWord.learnedWords.length > 0 ? Not(In(learnedWord.learnedWords)) : undefined,
         deletedAt: IsNull(),
       },
       order: {

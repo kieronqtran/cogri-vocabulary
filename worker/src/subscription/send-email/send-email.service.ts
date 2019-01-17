@@ -60,7 +60,7 @@ export class SendEmailService implements OnModuleInit {
           mark = mark;
         }
 
-        const encouragement = "If you continue with your current learning progress, next week, you will get " + mark + " over 50 points.";
+        const encouragement = "If you continue with your current learning progress, next week, you will learn " + mark + " words.";
 
 				const subject = `[Cogri Vocabulary] Hello ${name}!`;
 				const context = {};

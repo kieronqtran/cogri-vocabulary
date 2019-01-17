@@ -33,9 +33,9 @@ workerapp:
   env_file:
     - ./.env
   image: kieronqtran/cogri-vocabulary-worker
-  # volumes:
-  #   - '${PWD}/worker:/usr/src/app'
-  # command: npm run start:dev
+  volumes:
+    - '${PWD}/worker:/usr/src/app'
+  command: npm run start:dev
   links:
     - mysql
     - redis
@@ -47,9 +47,9 @@ learnerapp:
   ports:
     - 3001:3000
   image: kieronqtran/cogri-vocabulary-learner
-  # volumes:
-  #   - '${PWD}/learner:/usr/src/app'
-  # command: npm run start:dev
+  volumes:
+    - '${PWD}/learner:/usr/src/app'
+  command: npm run start:dev
   links:
     - mysql
     - redis
@@ -62,9 +62,9 @@ wordapp:
   ports:
     - 3000:3000
   image: kieronqtran/cogri-vocabulary-word
-  # volumes:
-  #   - '${PWD}/word:/usr/src/app'
-  # command: npm run start:dev
+  volumes:
+    - '${PWD}/word:/usr/src/app'
+  command: npm run start:dev
   links:
     - mysql
     - redis
@@ -77,9 +77,9 @@ frontendapp:
     - 4200:4200
     - 4000:4000
   image: kieronqtran/cogri-vocabulary-fe
-  # volumes:
-  #   - '${PWD}/client:/usr/src/app'
-  # command: npm start
+  volumes:
+    - '${PWD}/client:/usr/src/app'
+  command: npm start
 
 nginxproxy:
   env_file:

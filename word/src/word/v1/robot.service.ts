@@ -67,12 +67,15 @@ export class RobotService {
                 }
               });
             });
-          });
+          })
           } else {
             this.logger.log('There is no message in queue');
           }
         });
       }, 5000);
+
+      const count = await this.wordRepository.count();
+      console.log("NUMBER OF WORDS: " + count);
 
     } catch (e) {
       console.error(e);

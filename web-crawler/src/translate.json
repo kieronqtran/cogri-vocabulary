@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "cogri-vocabulary",
+  "private_key_id": "311d458d17ced7a9799c9349839bb29113d63079",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCkPXnbSpAwXbJG\nd6oLRO+5cthgF3BE2watGVV0XLd1hHTfpNUybBHXJpr9ltBWJYRsmrw4Mxx5yRhC\nni4Uzx0ixjISTYh7W1yQ5HNc9466AaOp0QfdFz4GyuWZsKcCFgs0ELT+BBzsSOrr\nyIZzT9P07tXeaL4jnwdmB0YFq19HQa92uLzxtk19pyJ2jJBtIpAlN0pU0VCcvI//\ndejLuywQyHQXfi1iVLha/3Mu8idfAgnPbdSmmjUEamqfDQjQjT0RMtXlOXgiEVtK\ncJX0BUo33fPq+9VjyzxD1Bi4HmL2Wc4iiCzNghd2cK3F6sSNWmTNL4xizvzQzCsb\nwd3ET9RjAgMBAAECggEATAi51S+buQhndAAKFNWBNZVZXoL7UqUjXheQXCJgPGNp\nx++DU6h8SeJxdlzPblJIEA9Ce7INyMO0G4MnSjLoBiVDIP4L5S/SlrFsRunEhZAk\nuIUw4sXTzUk5KgGCD5Es9pmVcNNuoGTRfP6EX/Xg5k97a0+KVutUfYN4gz9nCJE+\nEOtr6oTQ50E7F/gz+IQZUS+Am16qUm+NP5NiPYup83NSldloT2W7MfS/Bsyi6x8w\nCmGjT9lUKMl+oqhC6FRMb2vYYr6WOd6zkksZgUt4nRWxD6nFDDvHEBHZy5ycdd0v\ndtRQnCFmAl2kniQ17SjxfKmIMMoCMIORc7OPUjRg4QKBgQDYABA6Zi/ofKdH/2sE\nwJnpuRLR0HlG2bQeIqlpm4AEJCDYCO8iJVXGI25Ovdb/oWjXR/c/FE8xt6BC29Dy\nHsiOlqWskY0hmQ6y8vXYBXSisKhns3oNt29TcMJDAFv5jwotnGWbOpv7BfNPwcT9\nYHE5AEIY1LGAHIaupyVo/7Y3VwKBgQDCp54+HaBJSzu1IHcA0Scg5LGIuhTTco4i\na6CBEhNVkCIKWDyj0aaqdydtLb4FsCXYGPLoc3B56o+RmpuoZEh42dyC4TL2PYCA\nkymBYSyzvcPKEhZPtLjmIC6+WZMGZDnQFCkNtKH73zICnuv+/NvzwrWWKfU7I4h3\nBx1tIBnf1QKBgQCtLV/Vcph2jXqQ/veOl9zOxtOP5NVXOLRwdNnfEg1RRKYQjxkr\nB0P91+pYt1vpGEA2WjyhFmdoNREIibS8anHh4GZ0NT4x8cUXNDRnPfiFd52NhxgU\nZz2aaI1XqrITI9vFNd9A1Xy5hcvN5k1J2EjuqoZT4jNtw3E4FkqoJFyzgQKBgBJE\n9yYvU6btZ7o1RNYPy1NcA4mopWG/I7X5UgQrNSNXtsovw+lAORtQuaOWonoYMUUZ\n+lp00z6uFDF/SFLCrsag9ABYsJbJ6PCoX0HkY/Suv9yMXAm5FY2Lwbdd4t27tG1i\nJwRBSt6/8Qqr7cxt4Rr80Fw6reiSCjHZuhpO4/7NAoGBAJem9slQUemW4F/2X9Rr\n4HQyF3KOlNBWfLwStGH8CMWV700xxa/kNE/oSug6NOX3oi4muICokcmEdpjXmM4M\nPeHi8+FE+wU7CKobU1092vb7kFkFMG4rCM22KcIRdkmYLSZ2T0YnQVwV8BuqUxf5\nC3Rzo5igx5Z5KwlOuQMxao9o\n-----END PRIVATE KEY-----\n",
+  "client_email": "starting-account-zcv7hhl7c2mp@cogri-vocabulary.iam.gserviceaccount.com",
+  "client_id": "117423494698629070574",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/starting-account-zcv7hhl7c2mp%40cogri-vocabulary.iam.gserviceaccount.com"
+}
