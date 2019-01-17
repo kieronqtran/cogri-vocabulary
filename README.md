@@ -53,7 +53,7 @@ All the services that has been used:
  - Headless chromium
  - Docker Hub
  - Github
- - ## Coffee at Kai Coffeeshop
+ - *Coffee at Kai Coffeeshop*
  
 
 ## Accounts:
