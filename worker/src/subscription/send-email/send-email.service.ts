@@ -6,7 +6,7 @@ import { SubscriptionModuleOptions } from '../interface/subscription-options.int
 import { SendEmailSubscriptionData } from '../interface/send-email-subscription-data';
 import { SUBSCRIPTION_MODULE_OPTIONS, SUBSCRIPTION_KEY_METADATA, SUBSCRIPTION_JOB } from '../subscription.constants';
 import { LoggerService } from '../../core';
-import { template } from '../template';
+import { CronJob } from 'cron';
 import sendEmailJob = require('../send-mail.job');
 
 @Injectable()
@@ -15,6 +15,7 @@ export class SendEmailService implements OnModuleInit {
 
 	private readonly sendEmailQueue: Queue<SendEmailSubscriptionData> = new Bull(`${this.queueName}:send-email`, { redis: this.config.redis });
 	private readonly cornQueue: Queue<{ email: string; name: string }[]> = new Bull(`${this.queueName}:corn`, { redis: this.config.redis });
+	private readonly emailCron = new CronJob(this.config.defaultCron, this.startCron.bind(this));
 
 	constructor(
 		@Inject(SUBSCRIPTION_MODULE_OPTIONS) private readonly config: SubscriptionModuleOptions,
@@ -25,13 +26,58 @@ export class SendEmailService implements OnModuleInit {
   }
 
 	async onModuleInit() {
-		await this.startJob();
+		// await this.startJob();
+    this.sendEmailQueue.process(sendEmailJob);
+		this.emailCron.start();
 	}
+
+	async startCron() {
+	  const self = this;
+    const emailLists = await this.getUsers();
+
+    const promises = emailLists.map(async ({email, name}) => {
+      self.logger.log(`Create a job to send email to ${email}`);
+
+      const prediction = await this.machineLearning(email);
+      this.logger.log(JSON.stringify(prediction, null, 2));
+
+      var point = parseFloat(prediction["Prediction"]["predictedValue"]);
+      var mark = Math.round(point);
+
+      if (mark >= 50){
+        mark = 48;
+      }
+      else if (mark < 25){
+        mark = Math.round(mark * 1.5);
+      }
+      else if (mark < 10){
+        mark = mark * 3;
+      }
+      else {
+        mark = mark;
+      }
+
+      const encouragement = "If you continue with your current learning progress, next week, you will learn " + mark + " words.";
+
+      const subject = `[Cogri Vocabulary] Hello ${name}!`;
+      const context = {};
+
+      await self.sendEmailQueue.add({
+        context,
+        template: encouragement,
+        to: email,
+        subject,
+      }, {
+        removeOnComplete: true,
+        attempts: 5,
+      });
+    });
+    await Promise.all(promises);
+  }
 
 	async startJob() {
 		const { defaultCron, processes = 1, tz = 'Etc/UTC' } = this.config;
 
-		this.sendEmailQueue.process(sendEmailJob);
 		const self = this;
 
 		this.cornQueue.process(async (job: Bull.Job<{ email: string; name: string }[]>) => {
@@ -117,6 +163,8 @@ export class SendEmailService implements OnModuleInit {
     this.logger.log(`${JSON.stringify(job)} sending email job is running`);
 
   }
+
+
 
 	async machineLearning(email: string){
 	  const param = {"email" : email};

@@ -446,3 +446,49 @@
 {"timestamp":"2019-01-10T09:02:09.501Z","context":"SendEmailJob","level":"info","message":"Send email to quang.tran@nfq.asia successful"}
 {"timestamp":"2019-01-10T09:02:11.852Z","context":"SendEmailJob","level":"info","message":"Send email to 877512439a@gmail.com successful"}
 {"timestamp":"2019-01-11T08:46:36.501Z","context":"SendEmailService","level":"info","message":"{\"key\":\"__default__:::Etc/UTC:0/30 * * * * *\",\"name\":\"__default__\",\"id\":null,\"endDate\":null,\"tz\":\"Etc/UTC\",\"cron\":\"0/30 * * * * *\",\"next\":1547110980000} sending email job is running"}
+{"timestamp":"2019-01-17T08:29:40.821Z","context":"SendEmailService","level":"info","message":"{\"key\":\"__default__:::Etc/UTC:0/30 * * * * *\",\"name\":\"__default__\",\"id\":null,\"endDate\":null,\"tz\":\"Etc/UTC\",\"cron\":\"0/30 * * * * *\",\"next\":1547701140000} sending email job is running"}
+{"timestamp":"2019-01-17T08:30:01.267Z","context":"SendEmailService","level":"info","message":"Create a job to send email to kieron2208@gmail.com"}
+{"timestamp":"2019-01-17T08:30:01.270Z","context":"SendEmailService","level":"info","message":"Create a job to send email to kieron.qtran@gmail.com"}
+{"timestamp":"2019-01-17T08:30:01.270Z","context":"SendEmailService","level":"info","message":"Create a job to send email to quang.tran@nfq.asia"}
+{"timestamp":"2019-01-17T08:30:01.271Z","context":"SendEmailService","level":"info","message":"Create a job to send email to 877512439a@gmail.com"}
+{"timestamp":"2019-01-17T08:30:01.274Z","context":"SendEmailService","level":"info","message":"Create a job to send email to minhmancity@gmail.com"}
+{"timestamp":"2019-01-17T08:30:02.784Z","context":"SendEmailService","level":"info","message":"{\n  \"Prediction\": {\n    \"predictedValue\": 17.458709716796875,\n    \"details\": {\n      \"Algorithm\": \"SGD\",\n      \"PredictiveModelType\": \"REGRESSION\"\n    }\n  }\n}"}
+{"timestamp":"2019-01-17T08:30:04.371Z","context":"SendEmailService","level":"info","message":"{\n  \"Prediction\": {\n    \"predictedValue\": 16.411075592041016,\n    \"details\": {\n      \"Algorithm\": \"SGD\",\n      \"PredictiveModelType\": \"REGRESSION\"\n    }\n  }\n}"}
+{"timestamp":"2019-01-17T08:30:04.640Z","context":"SendEmailService","level":"info","message":"{\n  \"Prediction\": {\n    \"predictedValue\": 12.455384254455566,\n    \"details\": {\n      \"Algorithm\": \"SGD\",\n      \"PredictiveModelType\": \"REGRESSION\"\n    }\n  }\n}"}
+{"timestamp":"2019-01-17T08:30:04.670Z","context":"SendEmailService","level":"info","message":"{\n  \"Prediction\": {\n    \"predictedValue\": 12.455384254455566,\n    \"details\": {\n      \"Algorithm\": \"SGD\",\n      \"PredictiveModelType\": \"REGRESSION\"\n    }\n  }\n}"}
+{"timestamp":"2019-01-17T08:30:04.729Z","context":"SendEmailService","level":"info","message":"{\n  \"Prediction\": {\n    \"predictedValue\": 12.455384254455566,\n    \"details\": {\n      \"Algorithm\": \"SGD\",\n      \"PredictiveModelType\": \"REGRESSION\"\n    }\n  }\n}"}
+{"timestamp":"2019-01-17T08:30:05.583Z","context":"SendEmailJob","level":"info","message":"Send email to kieron.qtran@gmail.com successful"}
+{"timestamp":"2019-01-17T08:30:08.584Z","context":"SendEmailJob","level":"info","message":"Send email to kieron2208@gmail.com successful"}
+{"timestamp":"2019-01-17T08:30:10.612Z","context":"SendEmailJob","level":"info","message":"Send email to 877512439a@gmail.com successful"}
+{"timestamp":"2019-01-17T08:30:12.662Z","context":"SendEmailJob","level":"info","message":"Send email to quang.tran@nfq.asia successful"}
+{"timestamp":"2019-01-17T08:30:14.968Z","context":"SendEmailJob","level":"info","message":"Send email to minhmancity@gmail.com successful"}
+{"timestamp":"2019-01-17T09:30:01.557Z","context":"SendEmailService","level":"info","message":"Create a job to send email to kieron2208@gmail.com"}
+{"timestamp":"2019-01-17T09:30:01.564Z","context":"SendEmailService","level":"info","message":"Create a job to send email to kieron.qtran@gmail.com"}
+{"timestamp":"2019-01-17T09:30:01.564Z","context":"SendEmailService","level":"info","message":"Create a job to send email to quang.tran@nfq.asia"}
+{"timestamp":"2019-01-17T09:30:01.565Z","context":"SendEmailService","level":"info","message":"Create a job to send email to 877512439a@gmail.com"}
+{"timestamp":"2019-01-17T09:30:01.577Z","context":"SendEmailService","level":"info","message":"Create a job to send email to minhmancity@gmail.com"}
+{"timestamp":"2019-01-17T09:30:05.649Z","context":"SendEmailService","level":"info","message":"{\n  \"Prediction\": {\n    \"predictedValue\": 17.458709716796875,\n    \"details\": {\n      \"Algorithm\": \"SGD\",\n      \"PredictiveModelType\": \"REGRESSION\"\n    }\n  }\n}"}
+{"timestamp":"2019-01-17T09:30:05.774Z","context":"SendEmailService","level":"info","message":"{\n  \"Prediction\": {\n    \"predictedValue\": 12.455384254455566,\n    \"details\": {\n      \"Algorithm\": \"SGD\",\n      \"PredictiveModelType\": \"REGRESSION\"\n    }\n  }\n}"}
+{"timestamp":"2019-01-17T09:30:05.783Z","context":"SendEmailService","level":"info","message":"{\n  \"Prediction\": {\n    \"predictedValue\": 16.411075592041016,\n    \"details\": {\n      \"Algorithm\": \"SGD\",\n      \"PredictiveModelType\": \"REGRESSION\"\n    }\n  }\n}"}
+{"timestamp":"2019-01-17T09:30:05.787Z","context":"SendEmailService","level":"info","message":"{\n  \"Prediction\": {\n    \"predictedValue\": 12.455384254455566,\n    \"details\": {\n      \"Algorithm\": \"SGD\",\n      \"PredictiveModelType\": \"REGRESSION\"\n    }\n  }\n}"}
+{"timestamp":"2019-01-17T09:30:05.789Z","context":"SendEmailService","level":"info","message":"{\n  \"Prediction\": {\n    \"predictedValue\": 12.455384254455566,\n    \"details\": {\n      \"Algorithm\": \"SGD\",\n      \"PredictiveModelType\": \"REGRESSION\"\n    }\n  }\n}"}
+{"timestamp":"2019-01-17T09:30:10.453Z","context":"SendEmailJob","level":"info","message":"Send email to kieron.qtran@gmail.com successful"}
+{"timestamp":"2019-01-17T09:30:15.559Z","context":"SendEmailJob","level":"info","message":"Send email to minhmancity@gmail.com successful"}
+{"timestamp":"2019-01-17T09:30:18.626Z","context":"SendEmailJob","level":"info","message":"Send email to kieron2208@gmail.com successful"}
+{"timestamp":"2019-01-17T09:30:22.323Z","context":"SendEmailJob","level":"info","message":"Send email to quang.tran@nfq.asia successful"}
+{"timestamp":"2019-01-17T09:30:24.986Z","context":"SendEmailJob","level":"info","message":"Send email to 877512439a@gmail.com successful"}
+{"timestamp":"2019-01-17T09:31:01.015Z","context":"SendEmailService","level":"info","message":"Create a job to send email to kieron2208@gmail.com"}
+{"timestamp":"2019-01-17T09:31:01.019Z","context":"SendEmailService","level":"info","message":"Create a job to send email to kieron.qtran@gmail.com"}
+{"timestamp":"2019-01-17T09:31:01.020Z","context":"SendEmailService","level":"info","message":"Create a job to send email to quang.tran@nfq.asia"}
+{"timestamp":"2019-01-17T09:31:01.021Z","context":"SendEmailService","level":"info","message":"Create a job to send email to 877512439a@gmail.com"}
+{"timestamp":"2019-01-17T09:31:01.021Z","context":"SendEmailService","level":"info","message":"Create a job to send email to minhmancity@gmail.com"}
+{"timestamp":"2019-01-17T09:31:02.474Z","context":"SendEmailService","level":"info","message":"{\n  \"Prediction\": {\n    \"predictedValue\": 17.458709716796875,\n    \"details\": {\n      \"Algorithm\": \"SGD\",\n      \"PredictiveModelType\": \"REGRESSION\"\n    }\n  }\n}"}
+{"timestamp":"2019-01-17T09:31:02.526Z","context":"SendEmailService","level":"info","message":"{\n  \"Prediction\": {\n    \"predictedValue\": 12.455384254455566,\n    \"details\": {\n      \"Algorithm\": \"SGD\",\n      \"PredictiveModelType\": \"REGRESSION\"\n    }\n  }\n}"}
+{"timestamp":"2019-01-17T09:31:02.527Z","context":"SendEmailService","level":"info","message":"{\n  \"Prediction\": {\n    \"predictedValue\": 16.411075592041016,\n    \"details\": {\n      \"Algorithm\": \"SGD\",\n      \"PredictiveModelType\": \"REGRESSION\"\n    }\n  }\n}"}
+{"timestamp":"2019-01-17T09:31:02.531Z","context":"SendEmailService","level":"info","message":"{\n  \"Prediction\": {\n    \"predictedValue\": 12.455384254455566,\n    \"details\": {\n      \"Algorithm\": \"SGD\",\n      \"PredictiveModelType\": \"REGRESSION\"\n    }\n  }\n}"}
+{"timestamp":"2019-01-17T09:31:02.613Z","context":"SendEmailService","level":"info","message":"{\n  \"Prediction\": {\n    \"predictedValue\": 12.455384254455566,\n    \"details\": {\n      \"Algorithm\": \"SGD\",\n      \"PredictiveModelType\": \"REGRESSION\"\n    }\n  }\n}"}
+{"timestamp":"2019-01-17T09:31:05.516Z","context":"SendEmailJob","level":"info","message":"Send email to kieron.qtran@gmail.com successful"}
+{"timestamp":"2019-01-17T09:31:08.103Z","context":"SendEmailJob","level":"info","message":"Send email to quang.tran@nfq.asia successful"}
+{"timestamp":"2019-01-17T09:31:11.437Z","context":"SendEmailJob","level":"info","message":"Send email to kieron2208@gmail.com successful"}
+{"timestamp":"2019-01-17T09:31:14.012Z","context":"SendEmailJob","level":"info","message":"Send email to 877512439a@gmail.com successful"}
+{"timestamp":"2019-01-17T09:31:16.360Z","context":"SendEmailJob","level":"info","message":"Send email to minhmancity@gmail.com successful"}
