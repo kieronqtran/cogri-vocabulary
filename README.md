@@ -50,6 +50,7 @@ All the services that has been used:
  - AWS Route 53
  - AWS Simple Queue Service
  - AWS Lambda
+ - AWS Machine Learning
  - Headless chromium
  - Docker Hub
  - Github
