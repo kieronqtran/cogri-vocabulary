@@ -36,17 +36,26 @@ export class WordService {
 	}
 
 	async getSequenceWord(learnedWord: LearnedWordDTO){
-    const result = await this.wordRepository.find({
-      where: {
-        id: learnedWord.learnedWords && learnedWord.learnedWords.length > 0 ? Not(In(learnedWord.learnedWords)) : undefined,
-        deletedAt: IsNull(),
-      },
-      order: {
-        id: 'DESC',
-      },
-      take: 5,
+    const query = `SELECT DISTINCT
+      *
+      FROM word WHERE
+      deleted_at IS NULL
+      ${learnedWord.learnedWords && learnedWord.learnedWords.length > 0 ? ` AND id NOT IN (${learnedWord.learnedWords.join(',')})` : ''}
+      ORDER BY word ASC
+      LIMIT 5`;
+
+    const builder = await this.wordRepository.manager.query(query);
+    return builder.map(e => {
+      const word = new Word();
+      word.id = e.id;
+      word.word = e.word;
+      word.vietnameseMeaning = e.vietnamese_meaning;
+      word.similarWords = JSON.parse(e.similar_words);
+      word.examples = JSON.parse(e.examples);
+      word.createdAt = e.created_at;
+      word.updatedAt = e.updated_at;
+      return word;
     });
-    return result;
   }
 
 	async getById(id: string) {
